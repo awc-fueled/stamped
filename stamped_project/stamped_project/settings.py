@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'stamped',
+    'django_extensions', # just so I can get the interactive Werkzeug debugger! I promise!
 )
 
 # A sample logging configuration. The only tangible logging

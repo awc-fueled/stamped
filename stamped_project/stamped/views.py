@@ -10,4 +10,4 @@ from django.core.serializers.json import DjangoJSONEncoder
 #from stamped.models import 
 
 def home(request):
-	return HttpResponse("Hello, world.")
+	return render(request, "stamped/home.html")
