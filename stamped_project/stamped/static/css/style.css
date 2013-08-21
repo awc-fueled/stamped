@@ -1,32 +1,18 @@
 /* stamped app CSS */
-html, body 	{
-			  height: 100%;
-			  margin: 0;
-			  padding: 0;
-			}
-
 #navi { border-bottom: 1px solid  rgba(0, 0, 0, 0.5);}
-#feed {margin-left: 65px; vertical-align: bottom;}
-.navi_text {margin-bottom: 3px;}
+#feed { margin-left: 65px; vertical-align: bottom;}
+.navi_text { margin-bottom: 3px;}
 
 #map-canvas, #map_canvas { height: 450px; margin: 0px 65px 15px 65px;}
-
-@media print {
-	  
-			html, body { height: auto;}
-			#map-canvas, #map_canvas {height: 450px;}
-}
 
 #panel {
   position: absolute;
   top: 52px;
-  left: 50%;
-  margin-left: -180px;
+  left: 35%;
   z-index: 5;
   background-color: #fff;
   padding: 5px;
   border: 1px solid #999;
-  margin-left: -260px
 }
 
 input { border: 1px solid  rgba(0, 0, 0, 0.5);}

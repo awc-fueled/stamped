@@ -20,10 +20,12 @@ function initialize() {
   });
 
   google.maps.event.addListener(autocomplete, 'place_changed', function() {
+    //remove any pervious info on the map (if there is any) to get ready for a new query
     infowindow.close();
     marker.setVisible(false);
     input.className = '';
     var place = autocomplete.getPlace();
+
     if (!place.geometry) {
       // Inform the user that the place was not found and return.
       input.className = 'notfound';
@@ -58,20 +60,12 @@ function initialize() {
 
     infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
     infowindow.open(map, marker);
+
+    var output_list = [place.name, address];
+    //send map change to home_jQuery.js
+    get_map_place(output_list);
   });
 
-  // Sets a listener on a radio button to change the filter type on Places
-  // Autocomplete.
-  function setupClickListener(id, types) {
-    var radioButton = document.getElementById(id);
-    google.maps.event.addDomListener(radioButton, 'click', function() {
-      autocomplete.setTypes(types);
-    });
-  }
-
-  setupClickListener('changetype-all', []);
-  setupClickListener('changetype-establishment', ['establishment']);
-  setupClickListener('changetype-geocode', ['geocode']);
 }
 
 
