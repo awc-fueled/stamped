@@ -17,9 +17,8 @@ def results(request):
 	# import sys
 	# sys.stdout.write("\nresults view action\n")
 	# sys.stdout.write(result){'result':result}
-	#context = get_object_or_404(Restaurant, pk=1)
-	#restaurant.review_set.all()
-	return render(request, "stamped/restaurant.html")
+	restaurant = get_object_or_404(Restaurant, name='Fish', address='280 Bleecker St')
+	return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
 
 def feed_home(request):
 	category_choices = [
@@ -40,5 +39,5 @@ def feed_home(request):
 		category = random.choice(category_choices)
 		top_5 = Restaurant.objects.filter(category=category[0]).order_by('rating')[:5]
 		top_choices.append(top_5)
-	import sys; sys.stdout.write(str(len(top_choices)))
+	import sys; sys.stdout.write(str(len(top_choices)))	
 	return render(request, "stamped/feed.html", {'top_choices': top_choices} )
