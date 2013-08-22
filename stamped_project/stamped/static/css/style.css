@@ -1,5 +1,5 @@
 /* stamped app CSS */
-#navi { border-bottom: 1px solid  rgba(0, 0, 0, 0.5);}
+#navi { border-bottom: 1px solid  rgba(0, 0, 0, 0.5); width: 100%;}
 #feed { margin-left: 65px; vertical-align: bottom;}
 .navi_text { margin-bottom: 3px;}
 

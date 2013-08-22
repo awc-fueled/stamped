@@ -1,0 +1,32 @@
+{% extends "stamped/home.html" %}
+
+{% block results %}
+<h1>{{ restaurant.name }}</h1>
+<div id='restaurant_pic'><img src="{{ restaurant.profile_picture.url }}"></div>
+<div id='restaurant_info'>
+	<ul>
+		<!-- I should be a custom tag to find distance in blocks! <li> dist blocks }/li>-->
+		<li>{{ restaurant.address }}</li>
+		<li>{{ restaurant.date_added }}</li>		
+	</ul>
+</div>
+<div id='reviews_bin'>
+	{% with restaurant.review_set.all as reviews %}
+	{% for r in reviews %}
+	<div id="review">
+		<div id='review_user'><img src="{{ r.user.user_meta.profile_picture.url }}"><p>{{ r.user.get_full_name }}</p><p>{{ r.rating }}</p></div>
+		<div><p>{{ r.content }}</p></div>
+		{% with r.comment_set.all as comment %}
+		{% for c in comment %}
+		<div id="comment">
+			<div><img src="{{ c.user.user_meta.profile_picture.url }}"><p>{{ c.user.get_full_name }}</p></div>
+			<div></div><p>{{ c.content  }}</p> On {{ c.date_added }}</p>
+		</div>{
+		{% endfor %}
+		{% endwith %}
+	{% endfor %}
+	{% endwith %}
+		
+	</div>
+</div>	
+{% endblock %}

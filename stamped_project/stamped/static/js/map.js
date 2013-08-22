@@ -61,9 +61,52 @@ function initialize() {
     infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
     infowindow.open(map, marker);
 
-    var output_list = [place.name, address];
+    //var output_list = [place.name, address];
+   
+
+    //handle CSRF 
+
     //send map change to home_jQuery.js
-    get_map_place(output_list);
+/*    var csrftoken = $.cookie('csrftoken'); 
+    var send_data = { 'name': place.name, 'address': address};
+    $.post( '/results/', send_data, function (response){
+        alert(response); 
+        return send_data;
+
+    } );*/
+
+    var send_data = { 'name': place.name, 'address': address};
+    
+    var csrftoken = $.cookie('csrftoken'); 
+    
+    alert(csrftoken);
+
+    function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    } 
+    
+    $.ajaxSetup({
+        crossDomain: false, // obviates need for sameOrigin test
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type)) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $.ajax({ url: '/results/',
+        type: 'POST',
+        data: send_data,
+        success: function(response) {
+          $('#results').html(response);
+        },
+        error: function(obj, status, err) { alert(err); console.log(err); }
+      });
+
+
+
+
   });
 
 }

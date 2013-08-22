@@ -7,17 +7,21 @@
     <script language="JavaScript" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/map.js"></script>
     <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/home_jquery.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/test.js"></script>
+    <!--<script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/test.js"></script> -->
+    <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/jquery_cookie/jquery.cookie.js"></script>
     <link type="text/css" href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
   </head>
   <body>
+    {% csrf_token %}
     <div id="navi">
         <div id="feed"><p class="navi_text">Stamped Feed</p></div>
     </div>
     <div id="panel">
       <input id="searchTextField" type="text" size="50">
     </div>
+    
     <div id="map-canvas"></div>
     <div id="output"></div>
+    <div id="results">{% block results %}{% endblock %}</div>
   </body>
 </html>

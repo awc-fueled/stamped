@@ -1,3 +1,4 @@
+######project level!!
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
@@ -6,7 +7,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', include('stamped.urls')),
+    url(r'^', include('stamped.urls')),
+    #url(r'results/', include('stamped.urls')),
     # url(r'^stamped_project/', include('stamped_project.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
