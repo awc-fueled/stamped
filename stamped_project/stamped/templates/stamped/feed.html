@@ -1,4 +1,15 @@
-{% extends 'home.html' %}
-{% block feed % }
-
+{% extends 'stamped/home.html' %}
+{% block feed %}
+{% for r in top_choices %}
+<div id='top_choice_div'>
+	<ul id='top_choice_list'>
+		{% for i in r %}
+		{% if forloop.first %}
+		<li id="choice_cat_name"> {{ i.category }}</li>
+		{% endif %}
+		<li>{{ i.name }} Rating: {{ i.rating }}</li>
+		{% endfor %}
+	</ul>
+</div>
+{% endfor %}
 {% endblock %}
