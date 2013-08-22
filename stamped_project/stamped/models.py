@@ -3,11 +3,29 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Restaurant(models.Model):
+	# define restaurant categories 		
+
+	category_choices = [
+					('asian', 'Asian'),
+					('american', 'American'),
+					('bar_food', 'Bar Food'),
+					('seafood', 'Seafood'),
+					('sandwiches', 'Sandwiches'),
+					('french', 'French'),
+					('comfortfood', 'Comfort Food'),
+					('suhi', 'Sushi Bar'),
+					('unknown_cat', 'To cool to be defined')	
+				]
 	name = models.CharField(max_length=200)
 	address = models.CharField(max_length=200)
+	category = models.CharField(max_length=200,
+                                choices=category_choices,
+                                default='unknown_cat')
+	rating = models.FloatField()
 	stamped_out =  models.BooleanField(default=False)
 	profile_picture = models.ImageField(upload_to='restaurants_profile_pictures/', blank=True, null=True)
 	date_added = models.DateTimeField(auto_now_add=True)
+
 
 	def __unicode__(self):
 		'''
@@ -52,3 +70,4 @@ class User_Meta(models.Model):
 		for human readable model representation 
 		'''
 		return "User: %s, Add restaurant?%s" %(self.user, self.can_add_restaurants)
+

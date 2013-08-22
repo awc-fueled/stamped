@@ -7,7 +7,6 @@
     <script language="JavaScript" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/map.js"></script>
     <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/home_jquery.js"></script>
-    <!--<script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/test.js"></script> -->
     <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/jquery_cookie/jquery.cookie.js"></script>
     <link type="text/css" href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
   </head>
@@ -23,5 +22,6 @@
     <div id="map-canvas"></div>
     <div id="output"></div>
     <div id="results">{% block results %}{% endblock %}</div>
+    <div id='feed_stream'>{% block feed %}{%e endblock %}</div>
   </body>
 </html>
