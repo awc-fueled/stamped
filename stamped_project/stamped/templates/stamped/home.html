@@ -3,7 +3,8 @@
 <html>
   <head>
     <title>Stamped</title>
-    <script language="JavaScript" type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+   <!-- <script language="JavaScript" type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.9.1.min.js"></script>
     <script language="JavaScript" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/map.js"></script>
     <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/home_jquery.js"></script>
@@ -13,7 +14,7 @@
   <body>
     {% csrf_token %}
     <div id="navi">
-        <div id="feed"><p class="navi_text">Stamped Feed</p></div>
+        <div id="feed"><p class="navi_text"><a href="{% url 'home' %}">Stamped Feed</a></p></div>
     </div>
     <div id="panel">
       <input id="searchTextField" type="text" size="50">
@@ -22,6 +23,19 @@
     <div id="map-canvas"></div>
     <div id="output"></div>
     <div id="results">{% block results %}{% endblock %}</div>
-    <div id='feed_stream'>{% block feed %}{% endblock %}</div>
+    <div id='feed_stream'>
+    {% for r in top_choices %}
+      <div id='top_choice_div'>
+        <ul id='top_choice_list'>
+          {% for i in r %}
+          {% if forloop.first %}
+          <li id="choice_cat_name"> {{ i.category }}</li>
+          {% endif %}
+          <li>{{ i.name }} Rating: {{ i.rating }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+    </div>
   </body>
 </html>
