@@ -9,4 +9,5 @@ urlpatterns = patterns('',
         'document_root': settings.MEDIA_ROOT}),
     url(r'^upload_file/', views.upload_file), ## might not need this view becuase form is now inline
     url(r'^custom_tag/', views.custom_tag),
+    url(r'^add_comment/', views.make_comment),
 )

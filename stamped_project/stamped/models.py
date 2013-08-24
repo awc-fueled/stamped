@@ -44,7 +44,7 @@ class Review(models.Model):
 	def __unicode__(self):
 		'''
 		for human readable model representation 
-		'''
+		'''	
 		return "Review of %s by %s on %s" %(self.restaurant, self.user, self.date_added)
 
 class Comment(models.Model):
@@ -72,8 +72,12 @@ class User_Meta(models.Model):
 		'''
 		return "User: %s, Add restaurant?%s" %(self.user, self.can_add_restaurants)
 
-class RestaurantForms(ModelForm):
+class RestaurantForm(ModelForm):
 	class Meta:
 		model = Restaurant 
+
+class CommentForm(ModelForm):
+	class Meta:
+		model = Comment
 
 

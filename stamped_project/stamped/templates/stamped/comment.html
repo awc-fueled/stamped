@@ -1,0 +1,11 @@
+{% extends "stamped/home.html" %}
+{% block results %}
+<h2>Let The World Know What you Think</h2>	
+<form enctype="multipart/form-data" method="post" action="">
+	{% csrf_token %}
+	<table>
+		{{ form.as_table }}
+	</table>
+ 	<input id="upload_submit" type="submit" value="Stamp it!">
+</form>
+{% endblock %}

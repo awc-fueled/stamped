@@ -19,7 +19,15 @@
 			<p>Rating: {{ r.rating }}</p>
 			<p>{% timePosted r.date_added %}</p>
 		</div>
-		<div class='review_content'><p>"{{ r.content }}"</p></div>
+		<div class='review_content'>
+			<p>"{{ r.content }}"</p>
+		</div>
+		<div>
+			<form method='POST' action='/add_comment/'>
+				{% csrf_token %}
+				<input type="submit" value="Make a Comment">
+			</form>
+			</div>
 		{% with r.comment_set.all as comment %}
 		{% for c in comment %}
 		<div class="comment_div">

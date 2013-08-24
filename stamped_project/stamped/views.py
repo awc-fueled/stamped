@@ -8,7 +8,7 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 
 
-from stamped.models import Restaurant, RestaurantForms, Review
+from stamped.models import Restaurant, RestaurantForm, CommentForm, Review
 
 
 
@@ -57,7 +57,7 @@ def results(request):
 
 def upload_file(request):
     if request.method == 'POST':
-        form = RestaurantForms(request.POST, request.FILES)
+        form = RestaurantForm(request.POST, request.FILES)
         if form.is_valid():
             # file is saved
             form.save()
@@ -70,7 +70,7 @@ def upload_file(request):
             									)
             	})
     else:
-        form = RestaurantForms()
+        form = RestaurantForm()
     return render(request, 'stamped/formtest.html', {'form': form})
 
 def custom_tag(request):
@@ -78,4 +78,21 @@ def custom_tag(request):
 
 	d = datetime.datetime(2013,3,5)
 	return render(request, 'stamped/customtag.html', {'d': d})
-	
+
+def make_comment(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            # file is saved
+            form.save()
+            # render?
+            return HttpResponseRedirect('/results/', {
+            	'restaurant': get_object_or_404(
+            									Restaurant, 
+            									name=request.POST['name'], 
+            									address=request.POST['address']
+            									)
+            	})
+    else:
+        form = CommentForm()
+    return render(request, 'stamped/comment.html', {'form': form})
