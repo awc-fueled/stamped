@@ -8,7 +8,7 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 
 
-from stamped.models import Restaurant
+from stamped.models import Restaurant, RestaurantForms
 
 
 
@@ -34,9 +34,27 @@ def home(request):
 	return render(request, "stamped/home.html", {'top_choices': top_choices} )
 	
 def results(request):
-	# import sys
-	# sys.stdout.write("\nresults view action\n")
-	# sys.stdout.write(result){'result':result}
-	restaurant = get_object_or_404(Restaurant, name='Fish', address='280 Bleecker St')
-	return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
+	if request.method == 'POST':
+		restaurant = get_object_or_404(Restaurant, name='Fish', address='280 Bleecker St')
+		return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
+	else:
+		return HttpResponseRedirect('/')
 
+def upload_file(request):
+    if request.method == 'POST':
+        form = RestaurantForms(request.POST, request.FILES)
+        if form.is_valid():
+            # file is saved
+            form.save()
+            # render?
+            return HttpResponseRedirect('/results/', {
+            	'restaurant': get_object_or_404(
+            									Restaurant, 
+            									name=request.POST['name'], 
+            									address=request.POST['address']
+            									)
+            	})
+    else:
+        form = RestaurantForms()
+    return render(request, 'stamped/formtest.html', {'form': form})
+	

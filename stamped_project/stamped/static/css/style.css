@@ -23,9 +23,9 @@ input.notfound { border: 2px solid  rgba(255, 0, 0, 0.4);}
 
 /* dashboard formatting */
 #feed_stream 	 { margin-left: 65px;}
-#top_choice_div	 { display: inline-block; margin: 2px; border: 2px; }
-#top_choice_list { list-style: none; text-align: center;}
-#choice_cat_name { font-weight: bold;}
+.top_choice_div	 { display: inline-block; margin: 2px; border: 2px; }
+.top_choice_list { list-style: none; text-align: center;}
+.choice_cat_name { font-weight: bold;}
 
 /* restaurant results */
 #results		{ margin-left: 65px; margin-right: 65px; width: 100%;}

@@ -3,12 +3,6 @@
 <html>
   <head>
     <title>Stamped</title>
-   <!-- <script language="JavaScript" type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.9.1.min.js"></script>
-    <script language="JavaScript" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
-    <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/map.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/home_jquery.js"></script>
-    <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/jquery_cookie/jquery.cookie.js"></script>
     <link type="text/css" href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
   </head>
   <body>
@@ -25,11 +19,11 @@
     <div id="results">{% block results %}{% endblock %}</div>
     <div id='feed_stream'>
     {% for r in top_choices %}
-      <div id='top_choice_div'>
-        <ul id='top_choice_list'>
+      <div class='top_choice_div'>
+        <ul class='top_choice_list'>
           {% for i in r %}
           {% if forloop.first %}
-          <li id="choice_cat_name"> {{ i.category }}</li>
+          <li class="choice_cat_name"> {{ i.category }}</li>
           {% endif %}
           <li>{{ i.name }} Rating: {{ i.rating }}</li>
           {% endfor %}
@@ -38,4 +32,11 @@
     {% endfor %}
     </div>
   </body>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <script language="JavaScript" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+  <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/map.js"></script>
+  <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/home_jquery.js"></script>
+  <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/jquery_cookie/jquery.cookie.js"></script>
+
 </html>

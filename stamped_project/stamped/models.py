@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 
 # Create your models here.
 class Restaurant(models.Model):
@@ -15,7 +16,7 @@ class Restaurant(models.Model):
 					('comfortfood', 'Comfort Food'),
 					('suhi', 'Sushi Bar'),
 					('unknown_cat', 'To cool to be defined')	
-				]
+				]	
 	name = models.CharField(max_length=200)
 	address = models.CharField(max_length=200)
 	category = models.CharField(max_length=200,
@@ -70,4 +71,9 @@ class User_Meta(models.Model):
 		for human readable model representation 
 		'''
 		return "User: %s, Add restaurant?%s" %(self.user, self.can_add_restaurants)
+
+class RestaurantForms(ModelForm):
+	class Meta:
+		model = Restaurant 
+
 

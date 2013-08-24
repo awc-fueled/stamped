@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     url(r'results/', views.results, name='results'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.MEDIA_ROOT}),
+    url(r'^upload_file/', views.upload_file),
 )

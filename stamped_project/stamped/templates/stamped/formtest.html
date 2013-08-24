@@ -1,0 +1,14 @@
+<html>
+<head>
+	<title>form test</title>
+</head>
+<body>
+	<p>Other stuff</p>
+
+<form enctype="multipart/form-data" method="post" action="">
+	{% csrf_token %}
+    {{ form }}
+ 	<input type="submit" value="submit">
+</form>
+</body>
+</html>
