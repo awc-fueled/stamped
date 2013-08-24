@@ -30,6 +30,22 @@
         </ul>
       </div>
     {% endfor %}
+      <div id='recently_added_Restaurants'>
+        <ul id='rar_list'>
+          <li id="rar_name">Recently Added Restaurants</li>
+          {% for i in recently_added_Restaurants %}
+          <li>{{ i.name }} Rating: {{ i.rating }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div id='recent_reviews'>
+        <ul id='rr_list'>
+          <li id="rr_name">Recent Reviews</li>
+          {% for i in recent_reviews %}
+          <li>{{ i.restaurant }} Rating: {{ i.rating }}</li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </body>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

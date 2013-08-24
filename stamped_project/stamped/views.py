@@ -8,7 +8,7 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 
 
-from stamped.models import Restaurant, RestaurantForms
+from stamped.models import Restaurant, RestaurantForms, Review
 
 
 
@@ -30,8 +30,13 @@ def home(request):
 		category = random.choice(category_choices)
 		top_5 = Restaurant.objects.filter(category=category[0]).order_by('rating')[:5]
 		top_choices.append(top_5)
-	import sys; sys.stdout.write(str(len(top_choices)))	
-	return render(request, "stamped/home.html", {'top_choices': top_choices} )
+	recently_added_Restaurants = Restaurant.objects.order_by("date_added")[:5]
+	recent_reviews = Review.objects.order_by("date_added")
+	return render(request, "stamped/home.html", {
+		'top_choices': top_choices, 
+		'recently_added_Restaurants': recently_added_Restaurants, 
+		'recent_reviews':recent_reviews,
+		} )
 	
 def results(request):
 	# import sys
