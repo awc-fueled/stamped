@@ -1,5 +1,6 @@
 from django import template
 import datetime
+import pytz # for time zone handleing 
 
 register = template.Library()
 
@@ -18,7 +19,7 @@ class TimePostedNode(template.Node):
     def render(self, context):
         try:
             d = self.date_to_format.resolve(context)
-            delta = datetime.datetime.now() - d
+            delta = datetime.datetime.now(pytz.utc) - d
             if delta.days > 7:
                 return "Posted %s days ago." %(delta.days)
             elif delta.seconds//3600 > 1:

@@ -34,21 +34,21 @@ def home(request):
 	return render(request, "stamped/home.html", {'top_choices': top_choices} )
 	
 def results(request):
-	import sys
-	if request.method == 'POST':
-		restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')
-		#check for an empty querry set
-		if len(restaurant) > 0:
-			upload_file(request) # might call render twice, need to test
-		else:
-			#get the object out of the list
-			restaurant = restaurant[0]
-		return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
-	else:
-		sys.stdout.write("\n\nyouve beeen redirred\n\n")
-		return HttpResponseRedirect('/')
-	# restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')[0]
-	# return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
+	# import sys
+	# if request.method == 'POST':
+	# 	restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')
+	# 	#check for an empty querry set
+	# 	if len(restaurant) > 0:
+	# 		upload_file(request) # might call render twice, need to test
+	# 	else:
+	# 		#get the object out of the list
+	# 		restaurant = restaurant[0]
+	# 	return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
+	# else:
+	# 	sys.stdout.write("\n\nyouve beeen redirred\n\n")
+	# 	return HttpResponseRedirect('/')
+	restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')[0]
+	return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
 
 def upload_file(request):
     if request.method == 'POST':
