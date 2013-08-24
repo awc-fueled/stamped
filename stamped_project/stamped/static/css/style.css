@@ -3,7 +3,8 @@
 /* home.html, map formatting */
 #navi { border-bottom: 1px solid  rgba(0, 0, 0, 0.5); width: 100%;}
 #feed { margin-left: 65px; vertical-align: bottom;}
-.navi_text { margin-bottom: 3px; text-decoration: none;}
+#navi_text { margin-bottom: 3px;}
+#navi_text a { text-decoration: none;}
 
 #map-canvas, #map_canvas { height: 450px; margin: 0px 65px 15px 65px;}
 
@@ -37,16 +38,19 @@ input.notfound { border: 2px solid  rgba(255, 0, 0, 0.4);}
 
 /* Reviews */
 
-#review_user  {display: inline-block;}
-#review_user img 	{ height: 120px;}
-#review_user p {text-align: center;}
-#review_content {display: inline-block;}
-#review_content p {vertical-align: center; text-align: right;}
+.review_user  {display: inline-block;}
+.review_user img 	{ height: 120px;}
+.review_user p {text-align: center;}
+.review_content {display: inline-block;}
+.review_content p {vertical-align: center; text-align: right;}
 
 /* comment section */
-#comment_div {margin-left: 25px; width: 100%;}
-#comment_user  {display: inline-block;}
-#comment_user img 	{ height: 60px;}
-#comment_user p {text-align: center;}
-#comment_content {display: inline-block;}
-#comment_content p {vertical-align: center; text-align: right;} 
+.comment_div {margin-left: 25px; width: 100%;}
+.comment_user  {display: inline-block;}
+.comment_user img 	{ height: 60px;}
+.comment_user p {text-align: center;}
+.comment_content {display: inline-block;}
+.comment_content p {vertical-align: center; text-align: right;} 
+
+/* upload section */
+/*#upload_submit {display: inline-block;}*/

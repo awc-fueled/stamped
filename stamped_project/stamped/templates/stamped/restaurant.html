@@ -1,26 +1,26 @@
 {% extends "stamped/home.html" %}
-{% csrf_token %}
 {% block results %}
+
 <h1>{{ restaurant.name }}</h1>
 <div id='restaurant_pic'><img src="{{ restaurant.profile_picture.url }}"></div>
 <div id='restaurant_info'>
 	<ul>
 		<!-- I should be a custom tag to find distance in blocks! <li> dist blocks }/li>-->
-		<li>{{ restaurant.address }}</li> <!-- {% url results %} with resturant name! to make the link -->
+		<li>{{ restaurant.address }}</li> <!-- {zzz% urzzzl 'results' z%} with resturant name! to make the link -->
 		<li>Added on {{ restaurant.date_added }}</li>		
 	</ul>
 </div>
 <div id='reviews_bin'>
 	{% with restaurant.review_set.all as reviews %}
 	{% for r in reviews %}
-	<div id="review">
-		<div id='review_user'><img src="{{ r.user.user_meta.profile_picture.url }}"><p>{{ r.user.get_full_name }}</p><p>Rating: {{ r.rating }}</p></div>
-		<div id='review_content'><p>"{{ r.content }}"</p></div>
+	<div class="review_div">
+		<div class='review_user'><img src="{{ r.user.user_meta.profile_picture.url }}"><p>{{ r.user.get_full_name }}</p><p>Rating: {{ r.rating }}</p></div>
+		<div class='review_content'><p>"{{ r.content }}"</p></div>
 		{% with r.comment_set.all as comment %}
 		{% for c in comment %}
-		<div id="comment_div">
-			<div id="comment_user"><img src="{{ c.user.user_meta.profile_picture.url }}"><p>{{ c.user.get_full_name }}</p></div>
-			<div id="comment_content"><p>{{ c.content  }}</p> On {{ c.date_added }}</p></div>
+		<div class="comment_div">
+			<div class="comment_user"><img src="{{ c.user.user_meta.profile_picture.url }}"><p>{{ c.user.get_full_name }}</p></div>
+			<div class="comment_content"><p>{{ c.content  }}</p> On {{ c.date_added }}</p></div>
 		</div>
 		{% endfor %}
 		{% endwith %}

@@ -1,14 +1,12 @@
-<html>
-<head>
-	<title>form test</title>
-</head>
-<body>
-	<p>Other stuff</p>
-
+{% extends "stamped/home.html" %}
+{% block results %}
+<h2>THIS_PALCE isnt stamped yet. Put your stamp on it!</h2>	
 <form enctype="multipart/form-data" method="post" action="">
 	{% csrf_token %}
-    {{ form }}
- 	<input type="submit" value="submit">
+	<table>
+		{{ form.as_table }}
+	</table>
+    
+ 	<input type="submit" value="Stamp it!">
 </form>
-</body>
-</html>
+{% endblock %}
