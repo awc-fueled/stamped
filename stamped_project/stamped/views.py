@@ -3,8 +3,9 @@ from django.shortcuts import get_object_or_404, render, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth import logout
 
-from stamped.models import Restaurant, RestaurantForm, CommentForm, CreateUserForm, Review
+from stamped.models import Restaurant, Review, RestaurantForm, CommentForm, CreateUserForm, CreateUser_MetaForm
 
 
 
@@ -79,10 +80,12 @@ def custom_tag(request):
 @login_required
 def make_comment(request):
     if request.method == 'POST':
-        form = CommentForm(request.POST, request.FILES)
+    	
+        form = CommentForm(request.POST)
         if form.is_valid():
-            # file is saved
-            form.save()
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.save()
             # render?
             return HttpResponseRedirect('/results/', {
             	'restaurant': get_object_or_404(
@@ -113,24 +116,40 @@ def make_comment(request):
 #     else:
 #         # Return an 'invalid login' error message.
 
-from django.contrib.auth import logout
+
 def logout_view(request):
     logout(request)
 
 def create_user(request):
+	'''
+	create and login user
+	'''
+	if request.method == 'POST':
+		form = CreateUserForm(request.POST)
+		if form.is_valid():
+			# file is saved
+			form.save()
+			#login user
+			username = form['username']
+			password = form['password']
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				if user.is_active:
+					login(request, user)
+			    	return HttpResponseRedirect('/create_user_meta/')
+	else:
+		form = CreateUserForm()
+	return render(request, 'stamped/create_user.html', {'form': form})
+
+def create_user_meta(request):
     if request.method == 'POST':
-        form = CreateUserForm(request.POST, request.FILES)
+        form = CreateUser_MetaForm(request.POST, request.FILES)
         if form.is_valid():
-            # file is saved
+            user_meta = form.save(commit=False)
+            user_meta.user = request.user
             form.save()
-            # render?
-            return HttpResponseRedirect('/results/', {
-            	'restaurant': get_object_or_404(
-            									Restaurant, 
-            									name=request.POST['name'], 
-            									address=request.POST['address']
-            									)
-            	})
+            
+            return HttpResponseRedirect('/')
     else:
-        form = CreateUserForm()
-    return render(request, 'stamped/create_user.html', {'form': form})
+        form = CreateUser_MetaForm()
+    return render(request, 'stamped/create_user_meta.html', {'form': form})

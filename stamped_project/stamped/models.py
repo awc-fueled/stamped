@@ -77,9 +77,16 @@ class RestaurantForm(ModelForm):
 class CommentForm(ModelForm):
 	class Meta:
 		model = Comment
+		exclude = ('user', 'review',)
 
 class CreateUserForm(ModelForm):
 	class Meta:
+		model = User
+		fields = ('username', 'password', 'first_name', 'last_name', "email")
+
+class CreateUser_MetaForm(ModelForm):
+	class Meta:
 		model = User_Meta
+		exclude = ('user','avg_review')
 
 

@@ -25,6 +25,6 @@ class TimePostedNode(template.Node):
             elif delta.seconds//3600 > 1:
                 return "Posted %s days and %s minutes ago." %(delta.days, delta.seconds//3600)
             else:
-                 return "Posted %s seconds ago." %(delta.seconds//60)%60
+                 return "Posted %s seconds ago." %((delta.seconds//60)%60)
         except template.VariableDoesNotExist:
             return ''
