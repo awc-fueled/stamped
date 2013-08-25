@@ -2,11 +2,7 @@
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-
-# handle javascript varaible transfer 
-import json
-from django.core.serializers.json import DjangoJSONEncoder
-
+from django.contrib.auth.decorators import permission_required
 
 from stamped.models import Restaurant, RestaurantForm, CommentForm, Review
 
@@ -55,6 +51,7 @@ def results(request):
 	restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')[0]
 	return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
 
+@permission_required('user_meta.add_restaurant')
 def upload_file(request):
     if request.method == 'POST':
         form = RestaurantForm(request.POST, request.FILES)
@@ -79,6 +76,7 @@ def custom_tag(request):
 	d = datetime.datetime(2013,3,5)
 	return render(request, 'stamped/customtag.html', {'d': d})
 
+@permission_required('user_meta.add_restaurant')
 def make_comment(request):
     if request.method == 'POST':
         form = CommentForm(request.POST, request.FILES)
