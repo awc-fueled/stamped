@@ -18,8 +18,8 @@
 </tr>
 </table>
 
-<input type="submit" value="Login" />
-<input type="hidden" name="next" value="{{ next }}" />
+<input type="submit" value="Login" /><a href="{% url 'create_user' %}">Not Registered? Click here!</a>
+<input type="hidden" name="next" value="{% url 'home' %}" />
 </form>
 
 {% endblock %}

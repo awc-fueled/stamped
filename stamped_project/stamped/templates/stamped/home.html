@@ -8,7 +8,16 @@
   <body>
     {% csrf_token %}
     <div id="navi">
-        <div id="feed"><p id="navi_text"><a href="{% url 'home' %}">Stamped Feed</a></p></div>
+        <div id="navi_elements">
+          <ul>
+          <li class="navi_text"><a href="{% url 'home' %}">Stamped Home</a></li>
+          {% if user.is_authenticated %}
+          <li class="navi_text"><a href="{% url 'logout_view' %}">Logout</a></li>
+          {% else %}
+          <li class="navi_text"><a href="{% url 'django.contrib.auth.views.login' %}">Login</a></li>
+          {% endif %}
+          </ul>
+        </div>
     </div>
     <div id="panel">
       <input id="searchTextField" type="text" size="50">

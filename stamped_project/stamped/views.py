@@ -2,9 +2,9 @@
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import permission_required, login_required
 
-from stamped.models import Restaurant, RestaurantForm, CommentForm, Review
+from stamped.models import Restaurant, RestaurantForm, CommentForm, CreateUserForm, Review
 
 
 
@@ -76,7 +76,7 @@ def custom_tag(request):
 	d = datetime.datetime(2013,3,5)
 	return render(request, 'stamped/customtag.html', {'d': d})
 
-@permission_required('user_meta.add_restaurant')
+@login_required
 def make_comment(request):
     if request.method == 'POST':
         form = CommentForm(request.POST, request.FILES)
@@ -94,3 +94,43 @@ def make_comment(request):
     else:
         form = CommentForm()
     return render(request, 'stamped/comment.html', {'form': form})
+
+
+
+
+
+# from django.contrib.auth import authenticate, login
+# def login_view(request):
+#     username = request.POST['username']
+#     password = request.POST['password']
+#     user = authenticate(username=username, password=password)
+#     if user is not None:
+#         if user.is_active:
+#             login(request, user)
+#             # Redirect to a success page.
+#         else:
+#             # Return a 'disabled account' error message
+#     else:
+#         # Return an 'invalid login' error message.
+
+from django.contrib.auth import logout
+def logout_view(request):
+    logout(request)
+
+def create_user(request):
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST, request.FILES)
+        if form.is_valid():
+            # file is saved
+            form.save()
+            # render?
+            return HttpResponseRedirect('/results/', {
+            	'restaurant': get_object_or_404(
+            									Restaurant, 
+            									name=request.POST['name'], 
+            									address=request.POST['address']
+            									)
+            	})
+    else:
+        form = CreateUserForm()
+    return render(request, 'stamped/create_user.html', {'form': form})

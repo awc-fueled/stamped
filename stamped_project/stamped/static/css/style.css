@@ -2,9 +2,10 @@
 
 /* home.html, map formatting */
 #navi { border-bottom: 1px solid  rgba(0, 0, 0, 0.5); width: 100%;}
-#feed { margin-left: 65px; vertical-align: bottom;}
-#navi_text { margin-bottom: 3px;}
-#navi_text a { text-decoration: none;}
+#navi_elements { margin-left: 65px; vertical-align: bottom;}
+#navi_elements ul	{list-style: none; margin-bottom: 3px; padding-left: 0px;}
+.navi_text { display: inline-block; padding-right: 10px;}
+.navi_text a { text-decoration: none;}
 
 #map-canvas, #map_canvas { height: 450px; margin: 0px 65px 15px 65px;}
 

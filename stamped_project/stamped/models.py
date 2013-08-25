@@ -2,10 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-# Create your models here.
+
 class Restaurant(models.Model):
 	# define restaurant categories 		
-
 	category_choices = [
 					('asian', 'Asian'),
 					('american', 'American'),
@@ -63,7 +62,6 @@ class User_Meta(models.Model):
 	user = models.OneToOneField(User)
 	profile_picture = models.ImageField(upload_to='user_profile_pictures/', blank=True, null=True)
 	bio = models.TextField()
-	can_add_restaurants = models.BooleanField(default=False)
 	avg_review = models.FloatField()
 
 	def __unicode__(self):
@@ -79,5 +77,9 @@ class RestaurantForm(ModelForm):
 class CommentForm(ModelForm):
 	class Meta:
 		model = Comment
+
+class CreateUserForm(ModelForm):
+	class Meta:
+		model = User_Meta
 
 

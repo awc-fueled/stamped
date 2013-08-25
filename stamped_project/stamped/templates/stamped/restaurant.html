@@ -18,7 +18,10 @@
 			<p>{{ r.user.get_full_name }}</p>
 			<p>Rating: {{ r.rating }}</p>
 			<p>{% timePosted r.date_added %}</p>
-		</div>
+			{% if user == r.user %}
+			<p>{{ r.user.get_full_name }}, This is your post!<p>
+			{% endif %}
+		</div> 
 		<div class='review_content'>
 			<p>"{{ r.content }}"</p>
 		</div>
