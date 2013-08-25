@@ -1,0 +1,1 @@
+web: gunicorn stamped_project.wsgi
