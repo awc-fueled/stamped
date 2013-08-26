@@ -73,49 +73,62 @@ def upload_file(request):
     return render(request, 'stamped/upload_file.html', {'form': form})
 
 @login_required
-def make_comment(request):
-    if request.method == 'POST':
-    	print request.POST
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.save()
-            # render?
-            return HttpResponseRedirect('/results/', {
-            	'restaurant': get_object_or_404(
-            									Restaurant, 
-            									name=request.POST['name'], 
-            									address=request.POST['address']
-            									)
-            	})
-    else:
-        form = CommentForm()
-    return render(request, 'stamped/comment.html', {'form': form})
+def add_comment(request):
+	if request.method == 'POST':	
+		if 'prepair_comment' in request.POST:
+			print request.POST
+			review = get_object_or_404(Review, pk=request.POST.get('review_id'))
+			form = CommentForm({'review': review.id})
+			return render(request, 'stamped/comment.html', {
+				'form': form,
+			})
+		
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			print "form is valid"
+			comment = form.save(commit=False)
+			comment.user = request.user
+			comment.save()
+			return HttpResponseRedirect('/results/')
+			# return HttpResponseRedirect('/results/', {
+			# 	'restaurant': get_object_or_404(
+			# 									Restaurant, 
+			# 									name=request.POST['name'], 
+			# 									address=request.POST['address']
+			# 									)
+			# 	})
+	else:
+		form = CommentForm()
+	return render(request, 'stamped/comment.html', {'form': form})
 
 @login_required
 def add_review(request):
-    if request.method == 'POST':
-    	print request.POST
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.save()
-            # render?
-            return HttpResponseRedirect('/results/', {
-            	'restaurant': get_object_or_404(
-            									Restaurant, 
-            									name=request.POST['name'], 
-            									address=request.POST['address']
-            									)
-            	})
-    else:
-        form = ReviewForm()
-    return render(request, 'stamped/comment.html', {'form': form})
-
-
-
+	if request.method == 'POST':	
+		if 'prepair_review' in request.POST:
+			print request.POST
+			restaurant = get_object_or_404(Restaurant, pk=request.POST.get('rest_id'))
+			form = ReviewForm({'restaurant': restaurant.id})
+			return render(request, 'stamped/comment.html', {
+				'form': form,
+			})
+		
+		form = ReviewForm(request.POST)
+		if form.is_valid():
+			print "form is valid"
+			review = form.save(commit=False)
+			review.user = request.user
+			review.save()
+			return HttpResponseRedirect('/results/')
+			# return HttpResponseRedirect('/results/', {
+			# 	'restaurant': get_object_or_404(
+			# 									Restaurant, 
+			# 									name=request.POST['name'], 
+			# 									address=request.POST['address']
+			# 									)
+			# 	})
+	else:
+		form = ReviewForm()
+	return render(request, 'stamped/comment.html', {'form': form})
 
 ##### Handle Login/Log out views ####
 # from django.contrib.auth import authenticate, login

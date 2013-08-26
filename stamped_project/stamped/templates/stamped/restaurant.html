@@ -8,6 +8,12 @@
 		<!-- I should be a custom tag to find distance in blocks! <li> dist blocks }/li>-->
 		<li>{{ restaurant.address }}</li> <!-- {zzz% urzzzl 'results' z%} with resturant name! to make the link -->
 		<li>{% timePosted restaurant.date_added %}</li>		
+		<li>Put your stamp on it! Write a 
+			<form method='POST' action="{% url 'add_review' %}">
+				{% csrf_token %}
+				<input type='hidden' value='{{ restaurant.id }}' name="rest_id">
+				<input type='submit' value='review' name="prepair_review">
+			</form>
 	</ul>
 </div>
 <div id='reviews_bin'>
@@ -26,10 +32,10 @@
 			<p>"{{ r.content }}"</p>
 		</div>
 		<div>
-			<form method='POST' action='/add_comment/'>
+			<form method='POST' action="{% url 'add_comment' %}">
 				{% csrf_token %}
-				<input type="hidden" name='review_id' value='test'>
-				<input type="submit" value="Make a Comment">
+				<input type="hidden" name='review_id' value='{{ r.id }}'>
+				<input type='submit' name="prepair_comment" value="Make a Comment">
 			</form>
 			</div>
 		{% with r.comment_set.all as comment %}

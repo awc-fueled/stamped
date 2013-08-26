@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.forms import ModelForm
+from django.forms import ModelForm, HiddenInput
+
 
 
 class Restaurant(models.Model):
@@ -95,11 +96,14 @@ class RestaurantForm(ModelForm):
 class ReviewForm(ModelForm):
 	class Meta:
 		model = Review 
+		exclude = ('user',)
+		widgets = {'restaurant': HiddenInput()}
 
 class CommentForm(ModelForm):
 	class Meta:
 		model = Comment
-		exclude = ('user', 'review',)
+		exclude = ('user',)
+		widgets = {'review': HiddenInput()}
 
 class CreateUserForm(ModelForm):
 	class Meta:

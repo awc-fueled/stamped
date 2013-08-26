@@ -1,7 +1,7 @@
 {% extends "stamped/home.html" %}
 {% block results %}
 <h2>Let The world know what you think!</h2>	
-<form enctype="multipart/form-data" method="post" action="">
+<form enctype="multipart/form-data" method="POST">
 	{% csrf_token %}
 	<table>
 		{{ form.as_table }}
