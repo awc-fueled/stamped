@@ -3,12 +3,12 @@ from django.shortcuts import get_object_or_404, render, render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import permission_required, login_required
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 
 from stamped.models import Restaurant, Review, RestaurantForm, CommentForm, CreateUserForm, CreateUser_MetaForm
 
 
-
+### basic website navigation views #####
 def home(request):
 	category_choices = [
 					('american', 'American'),
@@ -52,6 +52,7 @@ def results(request):
 	restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')[0]
 	return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
 
+##### Handle views with uploading files / adding information to database ######
 @permission_required('user_meta.add_restaurant')
 def upload_file(request):
     if request.method == 'POST':
@@ -69,13 +70,7 @@ def upload_file(request):
             	})
     else:
         form = RestaurantForm()
-    return render(request, 'stamped/formtest.html', {'form': form})
-
-def custom_tag(request):
-	import datetime 
-
-	d = datetime.datetime(2013,3,5)
-	return render(request, 'stamped/customtag.html', {'d': d})
+    return render(request, 'stamped/upload_file.html', {'form': form})
 
 @login_required
 def make_comment(request):
@@ -101,7 +96,7 @@ def make_comment(request):
 
 
 
-
+##### Handle Login/Log out views ####
 # from django.contrib.auth import authenticate, login
 # def login_view(request):
 #     username = request.POST['username']
