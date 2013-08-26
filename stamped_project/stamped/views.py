@@ -4,8 +4,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.forms import UserCreationForm
 
-from stamped.models import Restaurant, Review, RestaurantForm, CommentForm, CreateUserForm, CreateUser_MetaForm, ReviewForm
+from stamped.models import Restaurant, Review, RestaurantForm, CommentForm, CreateUser_MetaForm, ReviewForm
 
 
 ### basic website navigation views #####
@@ -25,6 +26,7 @@ def home(request):
 	top_choices = []
 	for i in xrange(0, 3):
 		category = random.choice(category_choices)
+		# using sorted here becuase rating is a property and not a database column
 		top_5 = sorted(Restaurant.objects.filter(category=category[0]), key=lambda x: x.rating)[:5]
 		top_choices.append(top_5)
 	recently_added_Restaurants = Restaurant.objects.order_by("date_added")[:5]
@@ -103,6 +105,9 @@ def add_comment(request):
 
 @login_required
 def add_review(request):
+	'''
+	adds a review for a restaurant to the database
+	'''
 	if request.method == 'POST':	
 		if 'prepair_review' in request.POST:
 			print request.POST
@@ -130,6 +135,21 @@ def add_review(request):
 		form = ReviewForm()
 	return render(request, 'stamped/comment.html', {'form': form})
 
+def stamp_out(request):
+	'''
+	increment stamped out count
+	'''
+	if request.method == 'POST':	
+		if 'prepair_stamp_out' in request.POST:
+			r = Restaurant.objects.get(pk=request.POST.get('rest_id'))
+			r.stamped_out_count += 1
+			r.save()
+			return HttpResponseRedirect('/results/')
+	
+	return HttpResponseRedirect('/')
+
+
+
 ##### Handle Login/Log out views ####
 # from django.contrib.auth import authenticate, login
 # def login_view(request):
@@ -154,30 +174,28 @@ def create_user(request):
 	create and login user
 	'''
 	if request.method == 'POST':
-		form = CreateUserForm(request.POST)
+		form = UserCreationForm(request.POST)
 		if form.is_valid():
-			# file is saved
+			username = form.cleaned_data.get('username')
+			password = form.cleaned_data.get('password2')
 			form.save()
 			#login user
-			username = form['username']
-			password = form['password']
 			user = authenticate(username=username, password=password)
 			if user is not None:
 				if user.is_active:
 					login(request, user)
 			    	return HttpResponseRedirect('/create_user_meta/')
 	else:
-		form = CreateUserForm()
+		form = UserCreationForm()
 	return render(request, 'stamped/create_user.html', {'form': form})
 
 def create_user_meta(request):
     if request.method == 'POST':
-        form = CreateUser_MetaForm(request.POST, request.FILES)
+        form = CreateUser_MetaForm(request.POST)
         if form.is_valid():
             user_meta = form.save(commit=False)
             user_meta.user = request.user
             form.save()
-            
             return HttpResponseRedirect('/')
     else:
         form = CreateUser_MetaForm()

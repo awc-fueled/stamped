@@ -14,6 +14,14 @@
 				<input type='hidden' value='{{ restaurant.id }}' name="rest_id">
 				<input type='submit' value='review' name="prepair_review">
 			</form>
+		</li>
+		<li>Does this restaurant suck? Well, Then
+			<form method='POST' action="{% url 'stamp_out' %}">
+				{% csrf_token %}
+				<input type='hidden' value='{{ restaurant.id }}' name="rest_id">
+				<input type='submit' value='Stamp IT Out!' name="prepair_stamp_out">
+			</form>
+		</li>
 	</ul>
 </div>
 <div id='reviews_bin'>
