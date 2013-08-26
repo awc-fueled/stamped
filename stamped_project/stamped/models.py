@@ -84,7 +84,7 @@ class User_Meta(models.Model):
 		'''
 		for human readable model representation 
 		'''
-		return "User: %s, Can they add restaurants? [%s]" %(self.user, self.user.has_perm('add_resturant'))
+		return "User: %s, Can I add restaurants? [%s]" %(self.user, self.user.has_perm('add_resturant'))
 
 
 

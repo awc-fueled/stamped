@@ -169,6 +169,52 @@ def stamp_out(request):
 def logout_view(request):
     logout(request)
 
+def decay_choice(choices, val):
+    #for each additional 10,000 users, remove a percentage
+    #chance for a single user to get the add_restaurant 
+    #privlage stops assigning admins at 1,000,000 users 
+    #where app should be self sufficent
+    penalty = val // 10000
+    #control for values that might exceed 100
+    if penalty >= 100:
+        penalty = 100
+    print penalty
+    choices[0][1] -= penalty
+    choices[0][1] += penalty
+    #get a random number from a uniform distribution
+    r = random.uniform(0, 100)
+    if r <= choices[0][1]:
+        return choices[0][0]
+    elif r <= choices[1][1]:
+        return choices[1][1]
+
+def can_add_restaurants(user):
+	'''
+	Assign's permsion to add houses as a piecwise decay function.
+
+	Initially, the app will assign all users as admins, those that 
+	can add houses, until the user base reaches 1000. As the app grows 
+	the amount of admins assigned per user registration shrinks. 
+	Resutlting in a large userbase with realtively few admins. As the 
+	user base changes, the function will assign more or less admins. In 
+	this way it ensures that there are always enough admins to keep the site
+	going.  
+
+	'''
+
+	user_count = User.objects.count()
+
+	if user_count > 1000:
+		user.user_permissions.add('add_restaurant')
+	elif user_count < 1000:
+		#intial proportions of users to admin
+		#actually 90 10 because it will only 
+		#be called at the 1000 user level
+		choices = [[1,91], [0,9]]
+		add_bool = decay_choice(choices, user_count)
+		if add_bool == 1:
+			user.user_permissions.add('add_restaurant')
+
 def create_user(request):
 	'''
 	create and login user
@@ -184,6 +230,8 @@ def create_user(request):
 			if user is not None:
 				if user.is_active:
 					login(request, user)
+					# Assing add_restaurant permission
+					can_add_restaurants(user)
 			    	return HttpResponseRedirect('/create_user_meta/')
 	else:
 		form = UserCreationForm()
