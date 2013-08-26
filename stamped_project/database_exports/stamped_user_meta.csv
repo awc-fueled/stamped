@@ -1,2 +1,2 @@
-"id","user_id","profile_picture","bio","can_add_restaurants","avg_review"
-1,1,"user_profile_pictures/1012c53_2.jpg","I make luch apps occasionally.",1,5
+id,user_id,profile_picture,bio
+1,1,user_profile_pictures/1012c53_2.jpg,I make luch apps occasionally.

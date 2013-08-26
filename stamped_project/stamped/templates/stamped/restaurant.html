@@ -28,10 +28,10 @@
 		<div>
 			<form method='POST' action='/add_comment/'>
 				{% csrf_token %}
-				{{ r.id.as_hidden }}
+				<input type="hidden" name='review_id' value='test'>
 				<input type="submit" value="Make a Comment">
 			</form>
-		</div>
+			</div>
 		{% with r.comment_set.all as comment %}
 		{% for c in comment %}
 		<div class="comment_div">

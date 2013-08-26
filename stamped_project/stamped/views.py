@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth import logout, authenticate, login
 
-from stamped.models import Restaurant, Review, RestaurantForm, CommentForm, CreateUserForm, CreateUser_MetaForm
+from stamped.models import Restaurant, Review, RestaurantForm, CommentForm, CreateUserForm, CreateUser_MetaForm, ReviewForm
 
 
 ### basic website navigation views #####
@@ -25,7 +25,7 @@ def home(request):
 	top_choices = []
 	for i in xrange(0, 3):
 		category = random.choice(category_choices)
-		top_5 = Restaurant.objects.filter(category=category[0]).order_by('rating')[:5]
+		top_5 = sorted(Restaurant.objects.filter(category=category[0]), key=lambda x: x.rating)[:5]
 		top_choices.append(top_5)
 	recently_added_Restaurants = Restaurant.objects.order_by("date_added")[:5]
 	recent_reviews = Review.objects.order_by("date_added")
@@ -75,7 +75,7 @@ def upload_file(request):
 @login_required
 def make_comment(request):
     if request.method == 'POST':
-    	
+    	print request.POST
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
@@ -91,6 +91,27 @@ def make_comment(request):
             	})
     else:
         form = CommentForm()
+    return render(request, 'stamped/comment.html', {'form': form})
+
+@login_required
+def add_review(request):
+    if request.method == 'POST':
+    	print request.POST
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.save()
+            # render?
+            return HttpResponseRedirect('/results/', {
+            	'restaurant': get_object_or_404(
+            									Restaurant, 
+            									name=request.POST['name'], 
+            									address=request.POST['address']
+            									)
+            	})
+    else:
+        form = ReviewForm()
     return render(request, 'stamped/comment.html', {'form': form})
 
 

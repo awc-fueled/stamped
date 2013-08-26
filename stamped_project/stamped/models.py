@@ -21,11 +21,16 @@ class Restaurant(models.Model):
 	category = models.CharField(max_length=200,
                                 choices=category_choices,
                                 default='unknown_cat')
-	rating = models.FloatField()
+	
+	stamped_out_count = models.IntegerField()
 	stamped_out =  models.BooleanField(default=False)
 	profile_picture = models.ImageField(upload_to='restaurants_profile_pictures/', blank=True, null=True)
 	date_added = models.DateTimeField(auto_now_add=True)
-
+	
+	@property
+	def rating(self):
+	 	from django.db.models import Avg
+	 	return Review.objects.filter(restaurant=self.id).aggregate(Avg('rating'))['rating__avg']
 
 	def __unicode__(self):
 		'''
@@ -39,6 +44,12 @@ class Review(models.Model):
 	user = models.ForeignKey(User)
 	restaurant = models.ForeignKey(Restaurant)
 	date_added = models.DateTimeField(auto_now_add=True)
+
+	@property 
+	def avg_rating(self):
+		from django.db.models import Avg
+		return Review.objects.all().aggregate(Avg('rating'))['rating__avg']
+		
 
 	def __unicode__(self):
 		'''
@@ -62,17 +73,28 @@ class User_Meta(models.Model):
 	user = models.OneToOneField(User)
 	profile_picture = models.ImageField(upload_to='user_profile_pictures/', blank=True, null=True)
 	bio = models.TextField()
-	avg_review = models.FloatField()
+
+	@property
+	def avg_rating(self):
+		from django.db.models import Avg
+		return Review.objects.filter(user=self.user).aggregate(Avg('rating'))
 
 	def __unicode__(self):
 		'''
 		for human readable model representation 
 		'''
-		return "User: %s, Add restaurant?%s" %(self.user, self.can_add_restaurants)
+		return "User: %s, Can they add restaurants? [%s]" %(self.user, self.user.has_perm('add_resturant'))
 
+
+
+#### ModelForms ####
 class RestaurantForm(ModelForm):
 	class Meta:
 		model = Restaurant 
+
+class ReviewForm(ModelForm):
+	class Meta:
+		model = Review 
 
 class CommentForm(ModelForm):
 	class Meta:
