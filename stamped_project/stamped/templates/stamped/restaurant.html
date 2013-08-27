@@ -1,11 +1,17 @@
-{% extends "stamped/home.html" %}
-{% block results %}
+
 {% load stamped_custom_tags %}
 <h1>{{ restaurant.name }}</h1>
-<div id='restaurant_pic'><img src="{{ restaurant.profile_picture.url }}"></div>
+<div id='restaurant_pic'>
+	<img src="{{ restaurant.profile_picture.url }}">
+	{% if restaurant.stamped_out %}
+	<img src="{{ STATIC_URL }}imgs/stamped_out.png">
+	{% endif %}
+</div>
 <div id='restaurant_info'>
 	<ul>
-		<!-- I should be a custom tag to find distance in blocks! <li> dist blocks }/li>-->
+		{% if restaurant.stamped_out %}
+		<li>This restaurant has been stamped out. DONT EAT HERE!</li>
+		{% endif %}
 		<li>{{ restaurant.address }}</li> <!-- {zzz% urzzzl 'results' z%} with resturant name! to make the link -->
 		<li>{% timePosted restaurant.date_added %}</li>		
 		<li>Put your stamp on it! Write a 
@@ -19,7 +25,7 @@
 			<form method='POST' action="{% url 'stamp_out' %}">
 				{% csrf_token %}
 				<input type='hidden' value='{{ restaurant.id }}' name="rest_id">
-				<input type='submit' value='Stamp IT Out!' name="prepair_stamp_out">
+				<input type='submit' value='Stamp IT Out!' name="stamp_out">
 			</form>
 		</li>
 	</ul>
@@ -58,5 +64,4 @@
 	{% endwith %}
 		
 	</div>
-</div>	
-{% endblock %}
+</div>

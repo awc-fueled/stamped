@@ -5,12 +5,25 @@ function initialize() {
     center: new google.maps.LatLng(40.7200, -73.9900),
     zoom: 13,
     mapTypeId: google.maps.MapTypeId.ROADMAP
+    
   };
   var map = new google.maps.Map(document.getElementById('map-canvas'),
     mapOptions);
 
+  var defaultBounds = new google.maps.LatLngBounds(
+  new google.maps.LatLng(40.7200, -74.0000),
+  new google.maps.LatLng(40.7200, -73.9000));
+
+  var options = {
+  bounds: defaultBounds,
+  types: ['establishment'],
+  //rescrict results to US
+  componentRestrictions: {country: 'US'}
+  };
+
+
   var input = (document.getElementById('searchTextField'));
-  var autocomplete = new google.maps.places.Autocomplete(input);
+  var autocomplete = new google.maps.places.Autocomplete(input, options);
 
   autocomplete.bindTo('bounds', map);
 
@@ -79,8 +92,6 @@ function initialize() {
     
     var csrftoken = $.cookie('csrftoken'); 
     
-    alert(csrftoken);
-
     function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -99,7 +110,8 @@ function initialize() {
         type: 'POST',
         data: send_data,
         success: function(response) {
-          $('#results').html(response);
+          console.log("everything worked!");
+          $("#results").html(response);
         },
         error: function(obj, status, err) { alert(err); console.log(err); }
       });
@@ -108,7 +120,7 @@ function initialize() {
 
 
   });
-
+  
 }
 
 

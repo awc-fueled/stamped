@@ -27,7 +27,7 @@ def home(request):
 	for i in xrange(0, 3):
 		category = random.choice(category_choices)
 		# using sorted here becuase rating is a property and not a database column
-		top_5 = sorted(Restaurant.objects.filter(category=category[0]), key=lambda x: x.rating)[:5]
+		top_5 = sorted(Restaurant.objects.filter(category=category[0]), key=lambda x: x.rating, reverse=True)[:5]
 		top_choices.append(top_5)
 	recently_added_Restaurants = Restaurant.objects.order_by("date_added")[:5]
 	recent_reviews = Review.objects.order_by("date_added")
@@ -38,22 +38,28 @@ def home(request):
 		} )
 	
 def results(request):
-	# import sys
-	# if request.method == 'POST':
-	# 	restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')
-	# 	#check for an empty querry set
-	# 	if len(restaurant) > 0:
-	# 		upload_file(request) # might call render twice, need to test
-	# 	else:
-	# 		#get the object out of the list
-	# 		restaurant = restaurant[0]
-	# 	return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
-	# else:
-	# 	sys.stdout.write("\n\nyouve beeen redirred\n\n")
-	# 	return HttpResponseRedirect('/')
-	restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')[0]
-	return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
+	from django.shortcuts import redirect
+	if request.method == 'POST':
+		print "I've been posted. Here are my values"
+		print request.POST
+		print request.POST.get('name')
+		print request.POST.get('address')
+		return redirect('/results/')
+	# restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')[0]
+	# print restaurant
+	# to_render = render(request, "stamped/restaurant.html", {'restaurant': restaurant})
+	# print to_render
+	# return to_render
+	#switch to try except 404 with get obj or 404
+	try:
+		restaurant = Restaurant.objects.get(name=request.POST.get('name'), address=request.POST.get('address'))
+		return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
+		print "everything worked"
+	except:
+		print "things broke"
+		return upload_file(request)
 
+	
 ##### Handle views with uploading files / adding information to database ######
 @permission_required('user_meta.add_restaurant')
 def upload_file(request):

@@ -24,10 +24,18 @@ class Restaurant(models.Model):
                                 default='unknown_cat')
 	
 	stamped_out_count = models.IntegerField()
-	stamped_out =  models.BooleanField(default=False)
 	profile_picture = models.ImageField(upload_to='restaurants_profile_pictures/', blank=True, null=True)
 	date_added = models.DateTimeField(auto_now_add=True)
 	
+	@property
+	def stamped_out(self):
+		s_count = Restaurant.objects.get(pk=self.id).stamped_out_count
+		u_count = User.objects.count()
+		if s_count > (u_count * 0.1):
+			return True
+		else:
+			return False
+
 	@property
 	def rating(self):
 	 	from django.db.models import Avg
