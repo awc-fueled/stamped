@@ -102,20 +102,23 @@ function initialize() {
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type)) {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                xhr.setRequestHeader("X-Requested-With","XMLHttpRequest");
             }
         }
     });
 
+
     $.ajax({ url: '/results/',
         type: 'POST',
         data: send_data,
-        success: function(response) {
+        success: function(response, status, jqXHR) {
           console.log("everything worked!");
           $("#results").html(response);
+          console.log('success function resp');
+          //console.log(jqXHR.getAllResponseHeaders());
         },
         error: function(obj, status, err) { alert(err); console.log(err); }
       });
-
 
 
 
@@ -125,4 +128,4 @@ function initialize() {
 
 
   
-//google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', initialize);

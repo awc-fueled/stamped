@@ -23,7 +23,7 @@ class Restaurant(models.Model):
                                 choices=category_choices,
                                 default='unknown_cat')
 	stamped_out_count = models.IntegerField(default=0)
-	profile_picture = models.ImageField(upload_to='restaurants_profile_pictures/', blank=True, null=True)
+	profile_picture = models.ImageField(upload_to='restaurants_profile_pictures/')
 	date_added = models.DateTimeField(auto_now_add=True)
 	
 	@property

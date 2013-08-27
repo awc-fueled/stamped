@@ -1,0 +1,52 @@
+{% extends 'stamped/home.html' %}   
+    {%block footer %}
+    {% if top_choices %} 
+    <div id='feed_stream'>
+    {% for r in top_choices %}
+      <div class='top_choice_div'>
+        <ul class='top_choice_list'>
+          {% for i in r %}
+          {% if forloop.first %}
+          <li class="choice_cat_name"> {{ i.get_category_display }}</li>
+          {% endif %}
+          <li>{{ i.name }} Rating: {{ i.rating }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+      <div id='recently_added_Restaurants'>
+        <ul id='rar_list'>
+          {% for i in recently_added_Restaurants %}
+          {% if forloop.first %}
+          <li id="rar_name">Recently Added Restaurants</li>
+          {% endif %}
+          <li>{{ i.name }} Rating: {{ i.rating }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div id='recent_reviews'>
+        <ul id='rr_list'>
+          {% for i in recent_reviews %}
+          {% if forloop.first %}
+          <li id="rr_name">Recent Reviews</li>
+          {% endif %}
+          <li>{{ i.restaurant }} Rating: {{ i.rating }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div id='recent_comments'>
+        <ul id='rc_list'>
+          {% for i in recent_comments %}
+          {% if forloop.first %}
+          <li id="rc_name">Recent Comments</li>
+          {% endif %}
+          <li>{{ i.user }}  on {{ i.restaurant_set.rating }} Rating: {{ i.rating }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}  
+  </body>
+  
+</html>
+ {% endblock %} 

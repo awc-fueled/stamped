@@ -5,8 +5,9 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User, Permission
 
-from stamped.models import Restaurant, Review, RestaurantForm, CommentForm, CreateUser_MetaForm, ReviewForm
+from stamped.models import Restaurant, Review, Comment, RestaurantForm, CommentForm, CreateUser_MetaForm, ReviewForm
 
 
 ### basic website navigation views #####
@@ -30,24 +31,31 @@ def home(request):
 		top_5 = sorted(Restaurant.objects.filter(category=category[0]), key=lambda x: x.rating, reverse=True)[:5]
 		top_choices.append(top_5)
 	recently_added_Restaurants = Restaurant.objects.order_by("date_added")[:5]
-	recent_reviews = Review.objects.order_by("date_added")
-	return render(request, "stamped/home.html", {
+	recent_reviews = Review.objects.order_by("date_added")[:5]
+	recent_comments = Comment.objects.order_by("date_added")[:5]
+	return render(request, "stamped/base.html", {
 		'top_choices': top_choices, 
 		'recently_added_Restaurants': recently_added_Restaurants, 
 		'recent_reviews':recent_reviews,
+		'recent_comments': recent_comments,
 		} )
 
 def results(request):
 	from django.shortcuts import redirect
+	from django.http import Http404
 	print request
 	if request.method == 'POST':
 		print request.POST
 		name=request.POST.get('name')
 		address=request.POST.get('address')
 		try:
+			print "lookedup"
 			restaurant = get_object_or_404(Restaurant, name=name, address=address)
-			return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
-		except:			
+			print restaurant
+			return render(request, "stamped/restaurant.html", {'restaurant': restaurant, 'x':True})
+		except Http404,e: 
+				print str(e)
+				print "exception!"			
 				if 'category' in request.POST:
 					form = RestaurantForm(request.POST, request.FILES)
 					if form.is_valid():
@@ -195,6 +203,8 @@ def decay_choice(choices, val):
     #chance for a single user to get the add_restaurant 
     #privlage stops assigning admins at 1,000,000 users 
     #where app should be self sufficent
+
+    import random
     penalty = val // 10000
     #control for values that might exceed 100
     if penalty >= 100:
@@ -234,7 +244,8 @@ def can_add_restaurants(user):
 		choices = [[1,91], [0,9]]
 		add_bool = decay_choice(choices, user_count)
 		if add_bool == 1:
-			user.user_permissions.add('add_restaurant')
+			p = Permission.objects.get(codename='add_restaurant')
+			user.user_permissions.add(p)
 
 def create_user(request):
 	'''

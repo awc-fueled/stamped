@@ -1,7 +1,8 @@
 /* stamped app CSS */
 
 /* home.html, map formatting */
-#navi { border-bottom: 1px solid  rgba(0, 0, 0, 0.5); width: 100%;}
+html {font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", sans-serif;}
+#navi { border-bottom: 2px solid black; width: 100%;}
 #navi_elements { margin-left: 15%; vertical-align: bottom;}
 #navi_elements ul	{list-style: none; margin-bottom: 3px; margin-top: 0; padding-left: 0px;}
 .navi_icon { display: inline-block; padding-right: 10px;}
@@ -28,7 +29,7 @@ input.notfound { border: 2px solid  rgba(255, 0, 0, 0.4);}
 /* dashboard formatting */
 #feed_stream 	 { margin-left: 15%; width: 70%;}
 .top_choice_div, #recently_added_Restaurants, #recent_reviews { display: inline-block; margin: 2px; border: 2px; }
-.top_choice_list, #rar_list, #rr_list { list-style: none; text-align: center; padding: 0;}
+.top_choice_list, #rar_list, #rr_list { list-style: none; text-align: center; border: 3px solid black; border-radius: 18px; padding: 9px;}
 .choice_cat_name, #rar_name, #rr_name  { font-weight: bold;}
 
 
@@ -57,5 +58,19 @@ input.notfound { border: 2px solid  rgba(255, 0, 0, 0.4);}
 .comment_content {display: inline-block;}
 .comment_content p {vertical-align: center; text-align: right;} 
 
-/* upload section */
+/* upload / create section  */
 /*#upload_submit {display: inline-block;}*/
+input[type="submit"] { 
+	background: none;
+	border-radius: 5px;
+	font-family: Impact;
+
+}
+input[type="text"] { 
+	width: 100%;
+}
+#register {
+	margin: 5px;
+	text-decoration: none;
+	color: black;
+}

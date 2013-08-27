@@ -1,8 +1,6 @@
-{% extends request.is_ajax|yesno:",stamped/home.html" %}
-{% if request.is_ajax == False%}
-{% block results %}
-{% endif %}
+{% extends x|yesno:"stamped/blank.html,stamped/home.html" %}
 {% load stamped_custom_tags %}
+{% block results %}
 <h1>{{ restaurant.name }}</h1>
 
 <div id='restaurant_pic'>
@@ -69,6 +67,4 @@
 		
 	</div>
 </div>
-{% if request.is_ajax == False%}
 {% endblock %}
-{% endif %}

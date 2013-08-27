@@ -4,9 +4,14 @@
   <head>
     <title>Stamped</title>
     <link type="text/css" href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+    <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/map.js"></script>
+    <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/home_jquery.js"></script>
+    <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/jquery_cookie/jquery.cookie.js"></script>
   </head>
   <body>
-    {% csrf_token %}
     <div id="navi">
         <div id="navi_elements">
           <ul>
@@ -24,48 +29,5 @@
     </div>
     <div id="map-canvas"></div>
     <div id="results">{% block results %}{% endblock %}</div>
-    {% if top_choices %}  
-    <div id='feed_stream'>
-    {% for r in top_choices %}
-      <div class='top_choice_div'>
-        <ul class='top_choice_list'>
-          {% for i in r %}
-          {% if forloop.first %}
-          <li class="choice_cat_name"> {{ i.category }}</li>
-          {% endif %}
-          <li>{{ i.name }} Rating: {{ i.rating }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endfor %}
-      <div id='recently_added_Restaurants'>
-        <ul id='rar_list'>
-          {% for i in recently_added_Restaurants %}
-          {% if forloop.first %}
-          <li id="rar_name">Recently Added Restaurants</li>
-          {% endif %}
-          <li>{{ i.name }} Rating: {{ i.rating }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div id='recent_reviews'>
-        <ul id='rr_list'>
-          {% for i in recent_reviews %}
-          {% if forloop.first %}
-          <li id="rr_name">Recent Reviews</li>
-          {% endif %}
-          <li>{{ i.restaurant }} Rating: {{ i.rating }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-    {% endif %}  
-  </body>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-  <script language="JavaScript" type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
-  <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/map.js"></script>
-  <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/home_jquery.js"></script>
-  <script language="JavaScript" type="text/javascript" src="{{ STATIC_URL }}js/jquery_cookie/jquery.cookie.js"></script>
-</html>
-  
+    {% block footer %}
+    {% endblock %} 
