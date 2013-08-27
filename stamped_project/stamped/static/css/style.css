@@ -2,21 +2,23 @@
 
 /* home.html, map formatting */
 #navi { border-bottom: 1px solid  rgba(0, 0, 0, 0.5); width: 100%;}
-#navi_elements { margin-left: 65px; vertical-align: bottom;}
-#navi_elements ul	{list-style: none; margin-bottom: 3px; padding-left: 0px;}
-.navi_text { display: inline-block; padding-right: 10px;}
-.navi_text a { text-decoration: none;}
+#navi_elements { margin-left: 15%; vertical-align: bottom;}
+#navi_elements ul	{list-style: none; margin-bottom: 3px; margin-top: 0; padding-left: 0px;}
+.navi_icon { display: inline-block; padding-right: 10px;}
+.navi_icon img  { height: 35px;}
 
-#map-canvas, #map_canvas { height: 450px; margin: 0px 65px 15px 65px;}
+#map-canvas, #map_canvas { 
+height: 450px;
+width: 70%;
+margin: 0px 65px 15px 65px; 
+margin-left: 15%;
+}
 
 #panel {
-  position: absolute;
-  top: 52px;
-  left: 35%;
-  z-index: 5;
-  background-color: #fff;
-  padding: 5px;
-  border: 1px solid #999;
+margin-left: 38%;
+z-index: 999;
+position: absolute;
+left: 0;
 }
 
 input { border: 1px solid  rgba(0, 0, 0, 0.5);}
@@ -24,13 +26,15 @@ input { border: 1px solid  rgba(0, 0, 0, 0.5);}
 input.notfound { border: 2px solid  rgba(255, 0, 0, 0.4);}
 
 /* dashboard formatting */
-#feed_stream 	 { margin-left: 65px;}
-.top_choice_div	 { display: inline-block; margin: 2px; border: 2px; }
-.top_choice_list { list-style: none; text-align: center;}
-.choice_cat_name { font-weight: bold;}
+#feed_stream 	 { margin-left: 15%; width: 70%;}
+.top_choice_div, #recently_added_Restaurants, #recent_reviews { display: inline-block; margin: 2px; border: 2px; }
+.top_choice_list, #rar_list, #rr_list { list-style: none; text-align: center; padding: 0;}
+.choice_cat_name, #rar_name, #rr_name  { font-weight: bold;}
+
+
 
 /* restaurant results */
-#results		{ margin-left: 65px; margin-right: 65px; width: 100%;}
+#results		{ margin-left: 15%; margin-right: 65px; width: 100%;}
 #results h1		{ font-size: 75px; margin: 0;}
 #restaurant_pic { display: inline-block;}
 #restaurant_pic img { height: 300px; }
