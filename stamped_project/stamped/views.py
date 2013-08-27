@@ -36,55 +36,71 @@ def home(request):
 		'recently_added_Restaurants': recently_added_Restaurants, 
 		'recent_reviews':recent_reviews,
 		} )
-	
+
 def results(request):
 	from django.shortcuts import redirect
+	print request
 	if request.method == 'POST':
-		print "I've been posted. Here are my values"
 		print request.POST
-		print request.POST.get('name')
-		print request.POST.get('address')
-		return redirect('/results/')
-	# restaurant = Restaurant.objects.filter(name='Fish', address='280 Bleecker St')[0]
-	# print restaurant
-	# to_render = render(request, "stamped/restaurant.html", {'restaurant': restaurant})
-	# print to_render
-	# return to_render
-	#switch to try except 404 with get obj or 404
-	try:
-		restaurant = Restaurant.objects.get(name=request.POST.get('name'), address=request.POST.get('address'))
-		return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
-		print "everything worked"
-	except:
-		print "things broke"
-		return upload_file(request)
+		name=request.POST.get('name')
+		address=request.POST.get('address')
+		try:
+			restaurant = get_object_or_404(Restaurant, name=name, address=address)
+			return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
+		except:			
+				if 'category' in request.POST:
+					form = RestaurantForm(request.POST, request.FILES)
+					if form.is_valid():
+						restaurant = form.save(commit=False)
+						#set intial stamped out count to zero
+						restaurant.stamped_out_count = 0
+						restaurant.save()
+						restaurant = get_object_or_404(Restaurant, name=name, address=address)
+						return render(request, "stamped/restaurant.html", {'restaurant': restaurant})
+				else:
+					form = RestaurantForm(initial={'name':name, 'address':address})
+				return render(request, 'stamped/add_restaurant.html', {'form': form, 'name': name, 'address': address})
 
 	
 ##### Handle views with uploading files / adding information to database ######
 @permission_required('user_meta.add_restaurant')
-def upload_file(request):
-    if request.method == 'POST':
-        form = RestaurantForm(request.POST, request.FILES)
-        if form.is_valid():
-            # file is saved
-            form.save()
-            # render?
-            return HttpResponseRedirect('/results/', {
-            	'restaurant': get_object_or_404(
-            									Restaurant, 
-            									name=request.POST['name'], 
-            									address=request.POST['address']
-            									)
-            	})
-    else:
-        form = RestaurantForm()
-    return render(request, 'stamped/upload_file.html', {'form': form})
+def add_restaurant(request, name, address):
+	print "\nFirst \n"
+	print request
+	if request.method == 'POST':
+		if 'category' in request.POST:
+			print "not name or address"
+			form = RestaurantForm(request.POST, request.FILES)
+			form.stamped_out_count = 0
+			print form.stamped_out_count
+			print "is form valid?"
+			print form.is_valid()
+			print form.errors.items()
+			print form.category
+			print form.errors
+			if form.is_valid():
+				print request.POST
+				form.save()
+				return HttpResponseRedirect('/results/', {
+				'restaurant': get_object_or_404(
+												Restaurant, 
+												name=request.POST['name'], 
+												address=request.POST['address']
+												)
+				})
+	else:
+		print request.POST
+		print request.GET
+		print 'name / addres'
+		print name, address
+		print args
+		form = RestaurantForm(initial={'name':name, 'address':address})
+	return render(request, 'stamped/add_restaurant.html', {'form': form, 'name': name, 'address': address})
 
 @login_required
 def add_comment(request):
 	if request.method == 'POST':	
 		if 'prepair_comment' in request.POST:
-			print request.POST
 			review = get_object_or_404(Review, pk=request.POST.get('review_id'))
 			form = CommentForm({'review': review.id})
 			return render(request, 'stamped/comment.html', {
@@ -93,7 +109,6 @@ def add_comment(request):
 		
 		form = CommentForm(request.POST)
 		if form.is_valid():
-			print "form is valid"
 			comment = form.save(commit=False)
 			comment.user = request.user
 			comment.save()

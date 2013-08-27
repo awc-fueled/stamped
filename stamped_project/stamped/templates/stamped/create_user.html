@@ -1,7 +1,7 @@
 {% extends "stamped/home.html" %}
 {% block results %}
 <h2>Join the Stamped Community</h2>	
-<form enctype="multipart/form-data" method="post" action="">
+<form enctype="multipart/form-data" method="POST" action="">
 	{% csrf_token %}
 	<table>
 		{{ form.as_table }}

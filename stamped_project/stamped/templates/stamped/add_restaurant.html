@@ -1,0 +1,9 @@
+<p>{{ name }} on {{ address }} isnt stamped yet. But it looks pretty cool.</p>
+<p>Put your stamp on it! and add it to the stamped community.</p>	
+<form enctype="multipart/form-data" method="POST" action='{% url "results" %}'>
+	{% csrf_token %}
+	<table>
+		{{ form.as_table }}
+	</table>
+ 	<input id="upload_submit" type="submit" value="Stamp it!">
+</form>

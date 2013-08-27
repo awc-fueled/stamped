@@ -1,6 +1,10 @@
-
+{% extends request.is_ajax|yesno:",stamped/home.html" %}
+{% if request.is_ajax == False%}
+{% block results %}
+{% endif %}
 {% load stamped_custom_tags %}
 <h1>{{ restaurant.name }}</h1>
+
 <div id='restaurant_pic'>
 	<img src="{{ restaurant.profile_picture.url }}">
 	{% if restaurant.stamped_out %}
@@ -65,3 +69,6 @@
 		
 	</div>
 </div>
+{% if request.is_ajax == False%}
+{% endblock %}
+{% endif %}

@@ -22,19 +22,19 @@ class Restaurant(models.Model):
 	category = models.CharField(max_length=200,
                                 choices=category_choices,
                                 default='unknown_cat')
-	
-	stamped_out_count = models.IntegerField()
+	stamped_out_count = models.IntegerField(default=0)
 	profile_picture = models.ImageField(upload_to='restaurants_profile_pictures/', blank=True, null=True)
 	date_added = models.DateTimeField(auto_now_add=True)
 	
 	@property
 	def stamped_out(self):
-		s_count = Restaurant.objects.get(pk=self.id).stamped_out_count
+		s_count = Restaurant.objects.get(name=self.name, address=self.address).stamped_out_count
 		u_count = User.objects.count()
 		if s_count > (u_count * 0.1):
 			return True
 		else:
 			return False
+	
 
 	@property
 	def rating(self):
@@ -46,6 +46,8 @@ class Restaurant(models.Model):
 		for human readable model representation 
 		'''
 		return self.name
+	class Meta:
+		unique_together = ('name', 'address')
 
 class Review(models.Model):
 	content = models.TextField()
@@ -100,6 +102,7 @@ class User_Meta(models.Model):
 class RestaurantForm(ModelForm):
 	class Meta:
 		model = Restaurant 
+		exclude = ('stamped_out_count',)
 
 class ReviewForm(ModelForm):
 	class Meta:
@@ -112,11 +115,6 @@ class CommentForm(ModelForm):
 		model = Comment
 		exclude = ('user',)
 		widgets = {'review': HiddenInput()}
-
-class CreateUserForm(ModelForm):
-	class Meta:
-		model = User
-		fields = ('username', 'password', 'first_name', 'last_name', "email")
 
 class CreateUser_MetaForm(ModelForm):
 	class Meta:

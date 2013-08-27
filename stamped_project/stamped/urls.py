@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     url(r'^results/', views.results, name='results'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.MEDIA_ROOT}),
-    url(r'^upload_file/', views.upload_file, name='upload_file'),
+    url(r'^add_restaurant/', views.add_restaurant, name='add_restaurant'),
     url(r'^add_comment/', views.add_comment, name='add_comment'),
     url(r'^add_review/', views.add_review, name='add_review'),  
     url(r'^stamp_out/', views.stamp_out, name='stamp_out'),   
