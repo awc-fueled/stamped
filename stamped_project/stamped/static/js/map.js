@@ -1,4 +1,7 @@
-//intialize main map
+//initialize main map
+// initial map function is from a Google developers example. 
+// I've customized it to fit my needs here here.
+//https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete
 function initialize() {
   var mapOptions = {
     //set lat long for nyc 
