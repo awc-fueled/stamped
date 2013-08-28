@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm, HiddenInput
-
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Restaurant(models.Model):
 	# define restaurant categories 		
@@ -51,7 +50,7 @@ class Restaurant(models.Model):
 
 class Review(models.Model):
 	content = models.TextField()
-	rating = models.IntegerField()
+	rating = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)])
 	user = models.ForeignKey(User)
 	restaurant = models.ForeignKey(Restaurant)
 	date_added = models.DateTimeField(auto_now_add=True)

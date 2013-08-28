@@ -1,8 +1,9 @@
 {% extends x|yesno:"stamped/blank.html,stamped/home.html" %}
 {% load stamped_custom_tags %}
 {% block results %}
-<h1>{{ restaurant.name }}</h1>
 
+<!-- Restaurant Information -->
+<h1>{{ restaurant.name }}</h1>
 <div id='restaurant_pic'>
 	<img src="{{ restaurant.profile_picture.url }}">
 	{% if restaurant.stamped_out %}
@@ -34,6 +35,7 @@
 		</li>
 	</ul>
 </div>
+<!-- Reviews on Restaurant -->
 <div id='reviews_bin'>
 	{% with restaurant.review_set.all as reviews %}
 	{% for r in reviews %}
@@ -42,7 +44,7 @@
 			<div class='review_user'>
 				<img src="{{ r.user.user_meta.profile_picture.url }}">
 				<p>Review by {{ r.user.username }}</p>
-				<p>Rating: {{ r.rating }}</p>
+				<p>Rating: {{ r.rating|floatformat }}</p>
 				<p>Restaurant: {{ r.restaurant.name }}</p>
 				<p>{% timePosted r.date_added %}</p>
 			</div> 
@@ -60,6 +62,7 @@
 				</form>
 			</div>
 		</div>
+		<!-- Comments on reviews -->
 		{% with r.comment_set.all as comment %}
 		{% for c in comment %}
 		<div class="comment_div">
@@ -77,7 +80,5 @@
 	</div>
 	{% endfor %}
 	{% endwith %}
-		
-	
 </div>
 {% endblock %}

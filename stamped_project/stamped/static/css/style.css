@@ -1,7 +1,7 @@
 /* stamped app CSS */
 
 /* home.html, map formatting */
-html {font-family: Impact, Haettenschweiler, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", sans-serif;}
+html {font-family: "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", sans-serif;}
 #navi { border-bottom: 2px solid black; width: 100%;}
 #navi_elements { margin-left: 15%; vertical-align: bottom;}
 #navi_elements ul	{list-style: none; margin-bottom: 3px; margin-top: 0; padding-left: 0px;}
@@ -28,9 +28,9 @@ input.notfound { border: 2px solid  rgba(255, 0, 0, 0.4);}
 
 /* dashboard formatting */
 #feed_stream 	 { margin-left: 15%; width: 70%;}
-.top_choice_div, #recently_added_Restaurants, #recent_reviews, #recent_comments { display: inline-block; margin-left: 60px; border: 2px; }
+.top_choice_div, #recently_added_Restaurants, #recent_reviews, #recent_comments { display: inline-block; margin-left: 30px; border: 2px; }
 .top_choice_list, #rar_list, #rr_list, #rc_list { list-style: none; text-align: center; border: 3px solid black; border-radius: 18px; padding: 9px;}
-.choice_cat_name, #rar_name, #rr_name  { font-weight: bold;}
+.choice_cat_name, #rar_name, #rr_name, #rc_name  { font-weight: bold; border-bottom: 1px solid; margin-bottom: 9px;}
 #feed_title {text-align: center; border-bottom: 1px solid;}
 #feed_title h1 {margin: 40px 0px 0px 0px;}
 

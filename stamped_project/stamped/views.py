@@ -31,9 +31,9 @@ def home(request):
 		# using sorted here becuase rating is a property and not a database column
 		top_5 = sorted(Restaurant.objects.filter(category=category[0]), key=lambda x: x.rating, reverse=True)[:5]
 		top_choices.append(top_5)
-	recently_added_Restaurants = Restaurant.objects.order_by("date_added")[:5]
-	recent_reviews = Review.objects.order_by("date_added")[:5]
-	recent_comments = Comment.objects.order_by("date_added")[:5]
+	recently_added_Restaurants = Restaurant.objects.order_by("date_added").reverse()[:5]
+	recent_reviews = Review.objects.order_by("date_added").reverse()[:5]
+	recent_comments = Comment.objects.order_by("date_added").reverse()[:5]
 	return render(request, "stamped/base.html", {
 		'top_choices': top_choices, 
 		'recently_added_Restaurants': recently_added_Restaurants, 
@@ -102,7 +102,6 @@ def add_review(request):
 			return render(request, 'stamped/comment.html', {
 				'form': form,
 			})
-		#
 		form = ReviewForm(request.POST)
 		if form.is_valid():
 			print "form is valid"
