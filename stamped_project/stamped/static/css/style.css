@@ -28,32 +28,34 @@ input.notfound { border: 2px solid  rgba(255, 0, 0, 0.4);}
 
 /* dashboard formatting */
 #feed_stream 	 { margin-left: 15%; width: 70%;}
-.top_choice_div, #recently_added_Restaurants, #recent_reviews { display: inline-block; margin: 2px; border: 2px; }
-.top_choice_list, #rar_list, #rr_list { list-style: none; text-align: center; border: 3px solid black; border-radius: 18px; padding: 9px;}
+.top_choice_div, #recently_added_Restaurants, #recent_reviews, #recent_comments { display: inline-block; margin-left: 60px; border: 2px; }
+.top_choice_list, #rar_list, #rr_list, #rc_list { list-style: none; text-align: center; border: 3px solid black; border-radius: 18px; padding: 9px;}
 .choice_cat_name, #rar_name, #rr_name  { font-weight: bold;}
-
-
+#feed_title {text-align: center; border-bottom: 1px solid;}
+#feed_title h1 {margin: 40px 0px 0px 0px;}
 
 /* restaurant results */
-#results		{ margin-left: 15%; margin-right: 65px; width: 100%;}
+#results		{ margin-left: 15%; margin-right: 65px; width: 70%;}
 #results h1		{ font-size: 75px; margin: 0;}
 #restaurant_pic { display: inline-block;}
 #restaurant_pic img { height: 300px; }
 #restaurant_info { display: inline-block; font-size: 22px;} 
 #restaurant_info ul { list-style: none; }
-
+.restaurant_action {display: inline-block;}
+#stamped_out { position: absolute; z-index: 999;top: 609px;}
 /* Reviews */
-
+.user_review, .comment_div {border: 1px solid; padding: 10px; border-radius: 18px; margin: 10px;}
 .review_user  {display: inline-block;}
-.review_user img 	{ height: 120px;}
+.review_user img 	{ height: 120px; margin-left: 50px;	}
 .review_user p {text-align: center;}
 .review_content {display: inline-block;}
-.review_content p {vertical-align: center; text-align: right;}
+.review_content img {height: 45px; display: inline-block; margin-right: 10px; margin-left: 13px;}
+.review_content p {vertical-align: center; text-align: right; display: inline-block;}
 
 /* comment section */
-.comment_div {margin-left: 25px; width: 100%;}
+.comment_div {margin-left: 45px; width: 100%;}
 .comment_user  {display: inline-block;}
-.comment_user img 	{ height: 60px;}
+.comment_user img 	{ height: 60px; margin-left: 60px;}
 .comment_user p {text-align: center;}
 .comment_content {display: inline-block;}
 .comment_content p {vertical-align: center; text-align: right;} 

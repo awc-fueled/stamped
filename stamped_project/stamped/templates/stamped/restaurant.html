@@ -6,7 +6,7 @@
 <div id='restaurant_pic'>
 	<img src="{{ restaurant.profile_picture.url }}">
 	{% if restaurant.stamped_out %}
-	<img src="{{ STATIC_URL }}imgs/stamped_out.png">
+	<img id='stamped_out' src="{{ STATIC_URL }}imgs/stamped_out.png">
 	{% endif %}
 </div>
 <div id='restaurant_info'>
@@ -14,17 +14,19 @@
 		{% if restaurant.stamped_out %}
 		<li>This restaurant has been stamped out. DONT EAT HERE!</li>
 		{% endif %}
-		<li>{{ restaurant.address }}</li> <!-- {zzz% urzzzl 'results' z%} with resturant name! to make the link -->
+		<li>Rating: {{ restaurant.rating|floatformat|default:'Needs to be rated first.' }}</li>
+		<li>Stamped Out Count: {{ restaurant.stamped_out_count }}</li>
+		<li>{{ restaurant.address }}</li>
 		<li>{% timePosted restaurant.date_added %}</li>		
 		<li>Put your stamp on it! Write a 
-			<form method='POST' action="{% url 'add_review' %}">
+			<form class='restaurant_action' method='POST' action="{% url 'add_review' %}">
 				{% csrf_token %}
 				<input type='hidden' value='{{ restaurant.id }}' name="rest_id">
 				<input type='submit' value='review' name="prepair_review">
 			</form>
 		</li>
 		<li>Does this restaurant suck? Well, Then
-			<form method='POST' action="{% url 'stamp_out' %}">
+			<form class='restaurant_action' method='POST' action="{% url 'stamp_out' %}">
 				{% csrf_token %}
 				<input type='hidden' value='{{ restaurant.id }}' name="rest_id">
 				<input type='submit' value='Stamp IT Out!' name="stamp_out">
@@ -36,35 +38,46 @@
 	{% with restaurant.review_set.all as reviews %}
 	{% for r in reviews %}
 	<div class="review_div">
-		<div class='review_user'><img src="{{ r.user.user_meta.profile_picture.url }}">
-			<p>{{ r.user.get_full_name }}</p>
-			<p>Rating: {{ r.rating }}</p>
-			<p>{% timePosted r.date_added %}</p>
-			{% if user == r.user %}
-			<p>{{ r.user.get_full_name }}, This is your post!<p>
-			{% endif %}
-		</div> 
-		<div class='review_content'>
-			<p>"{{ r.content }}"</p>
-		</div>
-		<div>
-			<form method='POST' action="{% url 'add_comment' %}">
-				{% csrf_token %}
-				<input type="hidden" name='review_id' value='{{ r.id }}'>
-				<input type='submit' name="prepair_comment" value="Make a Comment">
-			</form>
+		<div class='user_review'>
+			<div class='review_user'>
+				<img src="{{ r.user.user_meta.profile_picture.url }}">
+				<p>Review by {{ r.user.username }}</p>
+				<p>Rating: {{ r.rating }}</p>
+				<p>Restaurant: {{ r.restaurant.name }}</p>
+				<p>{% timePosted r.date_added %}</p>
+			</div> 
+			<div class='review_content'>
+				{% if user == r.user %}
+				<img src="{{ STATIC_URL }}imgs/your_stamp.png">
+				{% endif %}
+				<p>"{{ r.content }}"</p>
 			</div>
+			<div>
+				<form method='POST' action="{% url 'add_comment' %}">
+					{% csrf_token %}
+					<input type="hidden" name='review_id' value='{{ r.id }}'>
+					<input type='submit' name="prepair_comment" value="Make a Comment">
+				</form>
+			</div>
+		</div>
 		{% with r.comment_set.all as comment %}
 		{% for c in comment %}
 		<div class="comment_div">
-			<div class="comment_user"><img src="{{ c.user.user_meta.profile_picture.url }}"><p>{{ c.user.get_full_name }}</p></div>
-			<div class="comment_content"><p>{{ c.content  }}</p>{% timePosted c.date_added %}</p></div>
+			<div class="comment_user">
+				<img src="{{ c.user.user_meta.profile_picture.url }}">
+				<p>Comment by {{ c.user.get_full_name }}</p>
+				<p>{% timePosted c.date_added %}</p>
+			</div>
+			<div class="comment_content">
+				<p>{{ c.content  }}</p>
+			</div>
 		</div>
 		{% endfor %}
 		{% endwith %}
+	</div>
 	{% endfor %}
 	{% endwith %}
 		
-	</div>
+	
 </div>
 {% endblock %}

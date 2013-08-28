@@ -2,6 +2,9 @@
     {%block footer %}
     {% if top_choices %} 
     <div id='feed_stream'>
+    <div id='feed_title'>
+    <h1>Top Restaurants</h1>
+    </div>
     {% for r in top_choices %}
       <div class='top_choice_div'>
         <ul class='top_choice_list'>
@@ -14,6 +17,9 @@
         </ul>
       </div>
     {% endfor %}
+    <div id='feed_title'>
+    <h1>Stamped Activity</h1>
+    </div>
       <div id='recently_added_Restaurants'>
         <ul id='rar_list'>
           {% for i in recently_added_Restaurants %}
@@ -40,7 +46,7 @@
           {% if forloop.first %}
           <li id="rc_name">Recent Comments</li>
           {% endif %}
-          <li>{{ i.user }}  on {{ i.restaurant_set.rating }} Rating: {{ i.rating }}</li>
+          <li>{{ i.user }}  on {{ i.review.restaurant.name }} Rating: {{ i.review.restaurant.rating  }}</li>
           {% endfor %}
         </ul>
       </div>

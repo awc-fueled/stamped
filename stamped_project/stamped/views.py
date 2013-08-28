@@ -11,6 +11,7 @@ from stamped.models import Restaurant, Review, Comment, RestaurantForm, CommentF
 
 
 ### basic website navigation views #####
+@login_required
 def home(request):
 	category_choices = [
 					('american', 'American'),
@@ -22,7 +23,7 @@ def home(request):
 					('suhi', 'Sushi Bar'),
 					('unknown_cat', 'To cool to be defined')	
 				]
-	
+	# Get context to fill the Dasboard
 	import random
 	top_choices = []
 	for i in xrange(0, 3):
@@ -40,22 +41,19 @@ def home(request):
 		'recent_comments': recent_comments,
 		} )
 
+def without_permission(request):
+	return render(request, 'stamped/without_permission..html')
+
+@permission_required('stamped.add_restaurant', login_url='/without_permission/')
 def results(request):
-	from django.shortcuts import redirect
 	from django.http import Http404
-	print request
-	if request.method == 'POST':
-		print request.POST
+	if request.method == 'POST':	
 		name=request.POST.get('name')
 		address=request.POST.get('address')
 		try:
-			print "lookedup"
 			restaurant = get_object_or_404(Restaurant, name=name, address=address)
-			print restaurant
 			return render(request, "stamped/restaurant.html", {'restaurant': restaurant, 'x':True})
-		except Http404,e: 
-				print str(e)
-				print "exception!"			
+		except Http404: 					
 				if 'category' in request.POST:
 					form = RestaurantForm(request.POST, request.FILES)
 					if form.is_valid():
@@ -68,43 +66,8 @@ def results(request):
 				else:
 					form = RestaurantForm(initial={'name':name, 'address':address})
 				return render(request, 'stamped/add_restaurant.html', {'form': form, 'name': name, 'address': address})
-
 	
 ##### Handle views with uploading files / adding information to database ######
-@permission_required('user_meta.add_restaurant')
-def add_restaurant(request, name, address):
-	print "\nFirst \n"
-	print request
-	if request.method == 'POST':
-		if 'category' in request.POST:
-			print "not name or address"
-			form = RestaurantForm(request.POST, request.FILES)
-			form.stamped_out_count = 0
-			print form.stamped_out_count
-			print "is form valid?"
-			print form.is_valid()
-			print form.errors.items()
-			print form.category
-			print form.errors
-			if form.is_valid():
-				print request.POST
-				form.save()
-				return HttpResponseRedirect('/results/', {
-				'restaurant': get_object_or_404(
-												Restaurant, 
-												name=request.POST['name'], 
-												address=request.POST['address']
-												)
-				})
-	else:
-		print request.POST
-		print request.GET
-		print 'name / addres'
-		print name, address
-		print args
-		form = RestaurantForm(initial={'name':name, 'address':address})
-	return render(request, 'stamped/add_restaurant.html', {'form': form, 'name': name, 'address': address})
-
 @login_required
 def add_comment(request):
 	if request.method == 'POST':	
@@ -120,14 +83,8 @@ def add_comment(request):
 			comment = form.save(commit=False)
 			comment.user = request.user
 			comment.save()
-			return HttpResponseRedirect('/results/')
-			# return HttpResponseRedirect('/results/', {
-			# 	'restaurant': get_object_or_404(
-			# 									Restaurant, 
-			# 									name=request.POST['name'], 
-			# 									address=request.POST['address']
-			# 									)
-			# 	})
+			restaurant = get_object_or_404(Restaurant, name=comment.review.restaurant.name, address=comment.review.restaurant.address)
+			return render(request, 'stamped/restaurant.html', {'restaurant':restaurant})
 	else:
 		form = CommentForm()
 	return render(request, 'stamped/comment.html', {'form': form})
@@ -145,56 +102,36 @@ def add_review(request):
 			return render(request, 'stamped/comment.html', {
 				'form': form,
 			})
-		
+		#
 		form = ReviewForm(request.POST)
 		if form.is_valid():
 			print "form is valid"
 			review = form.save(commit=False)
 			review.user = request.user
 			review.save()
-			return HttpResponseRedirect('/results/')
-			# return HttpResponseRedirect('/results/', {
-			# 	'restaurant': get_object_or_404(
-			# 									Restaurant, 
-			# 									name=request.POST['name'], 
-			# 									address=request.POST['address']
-			# 									)
-			# 	})
+			restaurant = get_object_or_404(Restaurant, name=review.restaurant.name, address=review.restaurant.address)
+			return render(request, 'stamped/restaurant.html', {'restaurant':restaurant})
 	else:
 		form = ReviewForm()
 	return render(request, 'stamped/comment.html', {'form': form})
 
+@login_required
 def stamp_out(request):
 	'''
 	increment stamped out count
 	'''
 	if request.method == 'POST':	
-		if 'prepair_stamp_out' in request.POST:
+		if 'stamp_out' in request.POST:
 			r = Restaurant.objects.get(pk=request.POST.get('rest_id'))
 			r.stamped_out_count += 1
 			r.save()
-			return HttpResponseRedirect('/results/')
+			return render(request, 'stamped/restaurant.html', {'restaurant':r})
 	
 	return HttpResponseRedirect('/')
 
 
 
 ##### Handle Login/Log out views ####
-# from django.contrib.auth import authenticate, login
-# def login_view(request):
-#     username = request.POST['username']
-#     password = request.POST['password']
-#     user = authenticate(username=username, password=password)
-#     if user is not None:
-#         if user.is_active:
-#             login(request, user)
-#             # Redirect to a success page.
-#         else:
-#             # Return a 'disabled account' error message
-#     else:
-#         # Return an 'invalid login' error message.
-
-
 def logout_view(request):
     logout(request)
 
@@ -271,7 +208,7 @@ def create_user(request):
 
 def create_user_meta(request):
     if request.method == 'POST':
-        form = CreateUser_MetaForm(request.POST)
+        form = CreateUser_MetaForm(request.POST, request.FILES)
         if form.is_valid():
             user_meta = form.save(commit=False)
             user_meta.user = request.user
