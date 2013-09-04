@@ -13,7 +13,7 @@
 <div id='restaurant_info'>
 	<ul>
 		{% if restaurant.stamped_out %}
-		<li>This restaurant has been stamped out. DONT EAT HERE!</li>
+		<li>This restaurant has been stamped out. <br> DONT EAT HERE!</li>
 		{% endif %}
 		<li>Rating: {{ restaurant.rating|floatformat|default:'Needs to be rated first.' }}</li>
 		<li>Stamped Out Count: {{ restaurant.stamped_out_count }}</li>

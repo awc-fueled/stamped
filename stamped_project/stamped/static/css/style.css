@@ -1,7 +1,20 @@
 /* stamped app CSS */
 
+/* fonts */
+
+@font-face {
+	font-family: "Impact Label Reversed";
+	src: url('fonts/Impact Label Reversed.ttf');
+}
+
+@font-face {
+	font-family: RubberStamp;
+	src: url('fonts/RubberStamp.ttf');
+}
+
 /* home.html, map formatting */
-html {font-family: "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", sans-serif;}
+html {font-family: RubberStamp, "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", sans-serif;}
+h1   {font-family: "Impact Label Reversed"; font-size: 25px;}
 #navi { 
 		border-bottom: 2px solid black; 
 		width: 100%; 
@@ -11,12 +24,13 @@ html {font-family: "Franklin Gothic Bold", Charcoal, "Helvetica Inserat", sans-s
 		margin-top: 0;
 		background: white;
 		top: -4px;
+		box-shadow: 3px 4px 5px #88888F;
 }
 #navi_elements { margin-left: 15%; vertical-align: bottom;}
 #navi_elements ul	{list-style: none; margin-bottom: 3px; margin-top: 0; padding-left: 0px;}
 .navi_icon { display: inline-block; padding-right: 10px;}
 .navi_icon img  { height: 35px;}
-#spacer {height: 41px;}
+#spacer {height: 45px;}
 
 #map-canvas, #map_canvas { 
 height: 450px;
@@ -37,22 +51,25 @@ input { border: 1px solid  rgba(0, 0, 0, 0.5);}
 input.notfound { border: 2px solid  rgba(255, 0, 0, 0.4);}
 
 /* dashboard formatting */
-#feed_stream 	 { margin-left: 15%; width: 70%;}
-.top_choice_div, #recently_added_Restaurants, #recent_reviews, #recent_comments { display: inline-block; margin-left: 30px; border: 2px; }
-.top_choice_list, #rar_list, #rr_list, #rc_list { list-style: none; text-align: center; border: 3px solid black; border-radius: 18px; padding: 9px;}
-.choice_cat_name, #rar_name, #rr_name, #rc_name  { font-weight: bold; border-bottom: 1px solid; margin-bottom: 9px;}
+#feed_stream 	 { margin-left: 10%; width: 80%;}
+.top_choice_div, #recently_added_Restaurants, #recent_reviews, #recent_comments { display: inline-block; border: 2px; height: 320px; width: 320px; margin-top: 15px;}
+.top_choice_list, #rar_list, #rr_list, #rc_list { list-style: none; text-align: center; padding: 9px; margin-top: 70px;}
+.choice_cat_name, #rar_name, #rr_name, #rc_name  { font-weight: bold; border-bottom: 1px solid; margin-bottom: 9px; width: 35%; margin-left: 100px;}
 #feed_title {text-align: center; border-bottom: 1px solid;}
 #feed_title h1 {margin: 40px 0px 0px 0px;}
+.feed_stamp	{height: 318px; position: absolute; display: inline-block; margin-right: 10px;}
 
 /* restaurant results */
 #results		{ margin-left: 15%; margin-right: 65px; width: 70%;}
 #results h1		{ font-size: 75px; margin: 0;}
 #restaurant_pic { display: inline-block;}
 #restaurant_pic img { height: 300px; }
-#restaurant_info { display: inline-block; font-size: 22px;} 
+#restaurant_info { display: inline-block; font-size: 22px; font-family: RubberStamp;} 
 #restaurant_info ul { list-style: none; }
+#stamped_out { position: absolute; z-index: 999;top: 575px;}
 .restaurant_action {display: inline-block;}
-#stamped_out { position: absolute; z-index: 999;top: 609px;}
+
+
 /* Reviews */
 .user_review, .comment_div {border: 1px solid; padding: 10px; border-radius: 18px; margin: 10px;}
 .review_user  {display: inline-block;}
@@ -73,9 +90,17 @@ input.notfound { border: 2px solid  rgba(255, 0, 0, 0.4);}
 /* upload / create section  */
 /*#upload_submit {display: inline-block;}*/
 input[type="submit"] { 
-	background: none;
-	border-radius: 5px;
 	font-family: Impact;
+	background: url("../imgs/button_bg.png") no-repeat scroll 0 0 transparent;
+	background-size: 85px 61px;
+	color: #000000;
+	cursor: pointer;
+	font-weight: bold;
+	height: 58px;
+	padding: 6px;
+	width: 85px;
+	border: 42px;
+}
 
 }
 input[type="text"] { 

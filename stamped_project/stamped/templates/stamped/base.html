@@ -7,6 +7,7 @@
     </div>
     {% for r in top_choices %}
       <div class='top_choice_div'>
+        <img class='feed_stamp' src="{{ STATIC_URL }}/imgs/feed_bg.png">
         <ul class='top_choice_list'>
           {% for i in r %}
           {% if forloop.first %}
@@ -17,10 +18,11 @@
         </ul>
       </div>
     {% endfor %}
-    <div id='feed_title'>
+    <div id='feed_title' style='margin-top: 100px;'>
     <h1>Stamped Activity</h1>
     </div>
       <div id='recently_added_Restaurants'>
+        <img class='feed_stamp' src="{{ STATIC_URL }}/imgs/feed_bg.png">
         <ul id='rar_list'>
           {% for i in recently_added_Restaurants %}
           {% if forloop.first %}
@@ -31,6 +33,7 @@
         </ul>
       </div>
       <div id='recent_reviews'>
+        <img class='feed_stamp' src="{{ STATIC_URL }}/imgs/feed_bg.png">
         <ul id='rr_list'>
           {% for i in recent_reviews %}
           {% if forloop.first %}
@@ -41,6 +44,7 @@
         </ul>
       </div>
       <div id='recent_comments'>
+        <img class='feed_stamp' src="{{ STATIC_URL }}/imgs/feed_bg.png">
         <ul id='rc_list'>
           {% for i in recent_comments %}
           {% if forloop.first %}
