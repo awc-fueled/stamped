@@ -44,7 +44,7 @@
 	<script type="text/javascript">
 	var data = {{ rating_list }};
 	var h = 100;
-	var w = 575;
+	var w = 900;
 	var bpad = 2;
 	var scale = 20;
 
@@ -65,7 +65,7 @@
 	var colorscale = d3.scale.linear()
 		.domain([d3.min(data), d3.max(data)])
 		.interpolate(d3.interpolateHcl)
-		.range(["#59E294", "#214592"]);
+		.range(["#FF5050", "#214592"]);
 
 	var rects = svg.selectAll('rects')
 		.data(data);

@@ -9,6 +9,18 @@ from django.contrib.auth.models import User, Permission
 
 from stamped.models import Restaurant, Review, Comment, RestaurantForm, CommentForm, CreateUser_MetaForm, ReviewForm
 
+### Aux Functions ###
+def get_rating_list(restaurant):
+	'''
+	gets a list of the ratings for a restaurant
+	in json format for d3 visualization. 
+	'''
+	import json
+	rating_list =[]
+	for r in restaurant.review_set.all():
+	    rating_list.append(r.rating)
+	rating_list = json.dumps(rating_list)
+	return rating_list
 
 ### basic website navigation views #####
 @login_required
@@ -53,10 +65,7 @@ def results(request):
 		address=request.POST.get('address')
 		try:
 			restaurant = get_object_or_404(Restaurant, name=name, address=address)
-			rating_list =[]
-			for r in restaurant.review_set.all():
-			    rating_list.append(r.rating)
-			rating_list = json.dumps(rating_list)
+			rating_list = get_rating_list(restaurant)
 			return render(request, "stamped/restaurant.html", {'restaurant': restaurant, 'x':True, 'rating_list':rating_list})
 		except Http404: 					
 				if 'category' in request.POST:
@@ -114,7 +123,8 @@ def add_review(request):
 			review.user = request.user
 			review.save()
 			restaurant = get_object_or_404(Restaurant, name=review.restaurant.name, address=review.restaurant.address)
-			return render(request, 'stamped/restaurant.html', {'restaurant':restaurant})
+			rating_list = get_rating_list(restaurant)
+			return render(request, 'stamped/restaurant.html', {'restaurant':restaurant, 'rating_list':rating_list})
 	else:
 		form = ReviewForm()
 	return render(request, 'stamped/comment.html', {'form': form})
