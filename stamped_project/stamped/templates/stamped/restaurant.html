@@ -82,7 +82,7 @@
 		});
 	</script>
 
-	{% with restaurant.review_set.all as reviews %}
+	{% with restaurant.review_set.all|dictsortreversed:"date_added" as reviews %}
 	{% for r in reviews %}
 	<div class="review_div">
 		<div class='user_review'>
