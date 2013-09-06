@@ -87,7 +87,7 @@ class User_Meta(models.Model):
 	@property
 	def avg_rating(self):
 		from django.db.models import Avg
-		return Review.objects.filter(user=self.user).aggregate(Avg('rating'))
+		return Review.objects.filter(user=self.user).aggregate(Avg('rating'))['rating__avg']
 
 	def __unicode__(self):
 		'''

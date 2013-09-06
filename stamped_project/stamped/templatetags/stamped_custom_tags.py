@@ -28,3 +28,30 @@ class TimePostedNode(template.Node):
                  return "Posted %s seconds ago." %((delta.seconds//60)%60)
         except template.VariableDoesNotExist:
             return ''
+
+@register.tag(name="pctChange")
+def do_pctChange(parser, token):
+    try:
+        # split_contents() knows not to split quoted strings.
+        tag_name, args = token.split_contents()
+        end, begin = args.split()
+        print end[1:]
+        print begin[:-1]
+    except ValueError:
+        raise template.TemplateSyntaxError("%r tag requires that arguments are in quotes" % token.contents.split()[0])
+    #slice to remove quotes
+    return pctChangeNode(end[1:], begin[:-1])
+
+class pctChangeNode(template.Node):
+    def __init__(self, end, begin):
+        self.begin = template.Variable(begin)
+        self.end = template.Variable(end)
+    def render(self, context):
+        try:
+            begin = self.begin.resolve(context)
+            end = self.end.resolve(context)
+            print end, begin
+            print (((end - begin)/ begin) * 100)
+            return "%0.2f%%" %(((end - begin)/ float(begin)) * 100)
+        except template.VariableDoesNotExist:
+            return ''
