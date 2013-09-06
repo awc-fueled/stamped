@@ -17,7 +17,7 @@
 		{% endif %}
 		<li>Rating: {{ restaurant.rating|floatformat|default:'Needs to be rated first.' }}</li>
 		{% with restaurant.review_set.all|first as r_set %}
-		<li>Rating Vs. Stamped Community:  {% pctChange "restaurant.rating r_set.avg_rating" %}</li>
+		<li>Rating Vs. Stamped Community:<br>{% pctChange "restaurant.rating r_set.avg_rating" %} above the average rating.</li>
 		{% endwith %}
 		<li>Stamped Out Count: {{ restaurant.stamped_out_count }}</li>
 		<li>{{ restaurant.address }}</li>
@@ -40,6 +40,48 @@
 </div>
 <!-- Reviews on Restaurant -->
 <div id='reviews_bin'>
+	<h2>Reviews:</h2>
+	<script type="text/javascript">
+	var data = {{ rating_list }};
+	var h = 100;
+	var w = 575;
+	var bpad = 2;
+	var scale = 20;
+
+	//Create SVG element
+	var svg = d3.select("#reviews_bin")
+		.insert("svg", 'div')
+		.attr({
+	           width: w,
+	           height: h
+	   });
+
+	//scale
+	//var chart_yscale = d3.scale().linear()
+	//	.domain([d3.min(data), d3.max(data)])
+	//	.range([0, h]);
+
+	// color scales
+	var colorscale = d3.scale.linear()
+		.domain([d3.min(data), d3.max(data)])
+		.interpolate(d3.interpolateHcl)
+		.range(["#59E294", "#214592"]);
+
+	var rects = svg.selectAll('rects')
+		.data(data);
+
+		
+	rects.enter()
+		.append('rect')
+		.attr({
+	      width: function(d){ return ((w / data.length) - bpad);},
+	      height: function(d){return d * scale;},
+	      y: function(d){return (h - (d * scale));},
+	      x: function(d,i){return (i * (w / data.length));},
+	      fill: function(d){return colorscale(d);}
+		});
+	</script>
+
 	{% with restaurant.review_set.all as reviews %}
 	{% for r in reviews %}
 	<div class="review_div">
@@ -49,7 +91,7 @@
 				<p>Review by {{ r.user.username }}</p>
 				<p>Rating: {{ r.rating|floatformat }}</p>
 				<p>User Average Rating: {{ r.user.user_meta.avg_rating|floatformat }}</p>
-				<p>User Average Rating Vs Golbal: {% pctChange "r.user.user_meta.avg_rating r.avg_rating" %}</p>
+				<p>User Average Rating Vs Golbal:<br>{% pctChange "r.user.user_meta.avg_rating r.avg_rating" %} above the average user rating.</p>
 				<p>Restaurant: {{ r.restaurant.name }}</p>
 				<p>{% timePosted r.date_added %}</p>
 			</div> 

@@ -47,12 +47,17 @@ def without_permission(request):
 @permission_required('stamped.add_restaurant', login_url='/without_permission/')
 def results(request):
 	from django.http import Http404
+	import json
 	if request.method == 'POST':	
 		name=request.POST.get('name')
 		address=request.POST.get('address')
 		try:
 			restaurant = get_object_or_404(Restaurant, name=name, address=address)
-			return render(request, "stamped/restaurant.html", {'restaurant': restaurant, 'x':True})
+			rating_list =[]
+			for r in restaurant.review_set.all():
+			    rating_list.append(r.rating)
+			rating_list = json.dumps(rating_list)
+			return render(request, "stamped/restaurant.html", {'restaurant': restaurant, 'x':True, 'rating_list':rating_list})
 		except Http404: 					
 				if 'category' in request.POST:
 					form = RestaurantForm(request.POST, request.FILES)
