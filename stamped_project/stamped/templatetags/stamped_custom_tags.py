@@ -35,8 +35,6 @@ def do_pctChange(parser, token):
         # split_contents() knows not to split quoted strings.
         tag_name, args = token.split_contents()
         end, begin = args.split()
-        print end[1:]
-        print begin[:-1]
     except ValueError:
         raise template.TemplateSyntaxError("%r tag requires that arguments are in quotes" % token.contents.split()[0])
     #slice to remove quotes
@@ -50,8 +48,6 @@ class pctChangeNode(template.Node):
         try:
             begin = self.begin.resolve(context)
             end = self.end.resolve(context)
-            print end, begin
-            print (((end - begin)/ begin) * 100)
             return "%0.2f%%" %(((end - begin)/ float(begin)) * 100)
         except template.VariableDoesNotExist:
             return ''

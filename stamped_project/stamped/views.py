@@ -110,7 +110,6 @@ def add_review(request):
 	'''
 	if request.method == 'POST':	
 		if 'prepair_review' in request.POST:
-			print request.POST
 			restaurant = get_object_or_404(Restaurant, pk=request.POST.get('rest_id'))
 			form = ReviewForm({'restaurant': restaurant.id})
 			return render(request, 'stamped/comment.html', {
@@ -118,7 +117,6 @@ def add_review(request):
 			})
 		form = ReviewForm(request.POST)
 		if form.is_valid():
-			print "form is valid"
 			review = form.save(commit=False)
 			review.user = request.user
 			review.save()
@@ -160,7 +158,6 @@ def decay_choice(choices, val):
     #control for values that might exceed 100
     if penalty >= 100:
         penalty = 100
-    print penalty
     choices[0][1] -= penalty
     choices[0][1] += penalty
     #get a random number from a uniform distribution

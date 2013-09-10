@@ -115,9 +115,8 @@ function initialize() {
         type: 'POST',
         data: send_data,
         success: function(response, status, jqXHR) {
-          console.log("everything worked!");
           $("#results").html(response);
-          console.log('success function resp');
+          //console.log('success function resp');
           //console.log(jqXHR.getAllResponseHeaders());
         },
         error: function(obj, status, err) { alert(err); console.log(err); }

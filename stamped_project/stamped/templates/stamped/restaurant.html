@@ -42,11 +42,26 @@
 <div id='reviews_bin'>
 	<h2>Reviews:</h2>
 	<script type="text/javascript">
-	var data = {{ rating_list }};
-	var h = 100;
-	var w = 900;
-	var bpad = 2;
-	var scale = 20;
+	
+	var data = {{ rating_list }},
+		h = 100,
+		w = 900,
+		p = [0.02, 17];
+
+	// xscale
+	var xscale = d3.scale.ordinal()
+				.domain(d3.range(data.length))
+				.rangeBands([0,w],p[0]);  	
+	// yscale
+	var yscale = d3.scale.linear()
+		.domain([0, d3.max(data)])
+		.range([0, h]);
+
+	// color scales
+	var colorscale = d3.scale.linear()
+		.domain([d3.min(data), d3.max(data)])
+		.interpolate(d3.interpolateHcl)
+		.range(["#FF5050", "#214592"]);
 
 	//Create SVG element
 	var svg = d3.select("#reviews_bin")
@@ -56,30 +71,32 @@
 	           height: h
 	   });
 
-	//scale
-	//var chart_yscale = d3.scale().linear()
-	//	.domain([d3.min(data), d3.max(data)])
-	//	.range([0, h]);
-
-	// color scales
-	var colorscale = d3.scale.linear()
-		.domain([d3.min(data), d3.max(data)])
-		.interpolate(d3.interpolateHcl)
-		.range(["#FF5050", "#214592"]);
-
 	var rects = svg.selectAll('rects')
 		.data(data);
-
-		
+	
 	rects.enter()
 		.append('rect')
 		.attr({
-	      width: function(d){ return ((w / data.length) - bpad);},
-	      height: function(d){return d * scale;},
-	      y: function(d){return (h - (d * scale));},
-	      x: function(d,i){return (i * (w / data.length));},
+	      width: xscale.rangeBand(),
+	      height: yscale,
+	      x: function(d,i){return xscale(i);},
+	      y: function(d) {return h - yscale(d);},
 	      fill: function(d){return colorscale(d);}
 		});
+
+	svg.selectAll("text")
+     	.data(data)
+   		.enter().append("text")
+   		.attr({
+   			x: function(d,i) { return xscale(i) + xscale.rangeBand() / 2; },
+   			y: function(d) {return h - yscale(d);},
+   			dy: p[1],
+   			dx: ".35em",	
+   			"text-anchor": "middle",
+   			fill: 'white'
+   		})
+   		.text(String);
+
 	</script>
 
 	{% with restaurant.review_set.all|dictsortreversed:"date_added" as reviews %}
